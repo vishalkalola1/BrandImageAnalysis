@@ -27,5 +27,5 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        cd BrandAnalysis
+        cd /BrandAnalysis
         python3.8 manage.py BrandAnalysis
