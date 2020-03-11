@@ -1,0 +1,19 @@
+{% extends "BrandAnalysisApp/Base.html" %}
+{% block title %} SignIn Page {% endblock %}
+{% block content %}
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+
+<div class="login-page">
+    <div class="form">
+        <form class="register-form" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="name" name="uname" required/>
+            <input type="text" placeholder="email address" name="uemail" required/>
+            <input type="password" placeholder="password" name="upassword" required/>
+            <button>create</button>
+            <p class="message">Already registered? <a href="/">Sign In</a></p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
