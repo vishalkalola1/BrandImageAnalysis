@@ -3,7 +3,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .forms import LoginForm, RegisterForm, UploadFileForm
 from .models import User
 import os
-# Create your views here.
 
 def login(request):
     context = {}
