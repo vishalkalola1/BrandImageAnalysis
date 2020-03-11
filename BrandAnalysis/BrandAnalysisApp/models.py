@@ -7,3 +7,7 @@ class User(models.Model):
     upassword = models.CharField(max_length=50)
     class Meta:
         db_table = "user"
+
+class UploadFile(models.Model):
+    title = models.CharField(max_length=50)
+    file = models.FileField()

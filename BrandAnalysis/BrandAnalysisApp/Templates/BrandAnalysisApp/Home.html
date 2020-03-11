@@ -3,10 +3,10 @@
 {% block content %}
 {% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
 
-<form name = "form" action = "" method = "POST" >
+<form name = "form" action = "home" method = "POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <label for="img">Select image:</label>
-    <input type="file" id="img" name="img" accept="image/*">
+    <label>Select image:</label>
+    <input type="file" name="file" accept="image/*">
     <input type="submit">
 </form>
 

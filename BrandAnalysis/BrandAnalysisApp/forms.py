@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, UploadFile
 
 class LoginForm(forms.ModelForm):
     class Meta:
@@ -10,3 +10,10 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['uname','upassword','uemail']
+
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadFile
+        fields = ['file']
+

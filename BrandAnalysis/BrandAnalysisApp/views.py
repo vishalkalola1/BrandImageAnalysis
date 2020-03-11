@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, UploadFileForm
 from .models import User
+import os
 # Create your views here.
 
 def login(request):
@@ -35,6 +36,21 @@ def register(request):
 def home(request):
     context = {}
     if request.method == "POST":
-        pass
+
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = request.FILES.get('file')
+            handle_uploaded_file(file, file.name)
+        else:
+            context["error"] = "File not uploaded try again later"
+        return redirect('home')
     else:
         return render(request, 'BrandAnalysisApp/Home.html',context)
+
+def handle_uploaded_file(f,name):
+    filename_w_ext = os.path.basename(name)
+    path = '/Users/vishal/Documents/Projects/PRI/BrandAnalysis/BrandAnalysisApp/Media/' + filename_w_ext
+    print(path)
+    with open(path, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
