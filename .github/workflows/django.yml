@@ -27,4 +27,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        python manage.py BrandAnalysis
+        python3.8 manage.py BrandAnalysis
