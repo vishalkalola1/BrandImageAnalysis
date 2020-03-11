@@ -1,7 +1,8 @@
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
 from .forms import LoginForm, RegisterForm, UploadFileForm
-from .models import User
+from .models import User,UploadFile
+
 import os
 
 def login(request):
@@ -36,10 +37,12 @@ def home(request):
     context = {}
     if request.method == "POST":
 
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = request.FILES.get('file')
-            handle_uploaded_file(file, file.name)
+        imageForms = UploadFileForm(request.POST, request.FILES)
+        if imageForms.is_valid():
+            files = imageForms.files.getlist('file')
+            for i in range(len(files)):
+                file = files[i]
+                handle_uploaded_file(file, file.name)
         else:
             context["error"] = "File not uploaded try again later"
         return redirect('home')
