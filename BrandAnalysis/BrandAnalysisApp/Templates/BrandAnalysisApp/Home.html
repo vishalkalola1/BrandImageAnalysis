@@ -1,14 +1,10 @@
-{% extends "BrandAnalysisApp/Base.html" %}
-{% block title %}This is the home page {% endblock %}
-{% block content %}
-{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 
-<form name = "form" action = "home" method = "POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label>Select image:</label>
-    <input type="file" name="file" accept="image/*" multiple>
-    <input type="submit">
-</form>
-
-
-{% endblock %}
+</body>
+</html>

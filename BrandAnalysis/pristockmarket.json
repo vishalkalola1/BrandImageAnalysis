@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "pristockmarket",
+  "private_key_id": "2fa521b274776686bbe69e07d864ef93714307ea",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCd0/SpIiq8nS1f\nr3KVpS+lq9/p5WRaSx0al7AAfuLuUZFzG1pXejQ4j4prcpgcQRYaW3Hee32eM+2u\ncWTu8DfxtG7NcFnYZRush63CSwiDSZfNOf32yKAtfxVH/KjtlLYrjCzbWdr4OyKU\nnDbldskLhulOwaov1VrOgxtRxXejP2D71qAKO0disjSoiQwd1Dmc9iQEItNTVruu\nxZMY8NPR67hesPNNmSqxgtp7K4x9o3+Z2l3e8TwNeYOrltQmKRFja+q3lCdNzGNh\nTU0udVWPHqyPJ9UJuqU0tPhG6oekByt8fbMnydbLnvcEI4xciwAqbvRELNWB50iD\nHJgQ5itrAgMBAAECggEANEVDbVSUhN0lbuBDec44hozy3psLbmAcJneAYdmkPLul\nCVNQy1H8w5K+jDFqsUjZEiehAccyZlfaawDBJeVHEfTpEX8ZMnLiBHT3FjcVfa28\n6cpAEyCE9Cx3ltzV8cFjx+5n2MncnIOxQzitcbeyg+/NizjWrXri1SxUuvNEWTsa\nNacBUJ5VAhiYRa+ZX/ovQ00C9GhctSm8K7uuSxvUJDO2T5JWCr/XetzH0V0tbNw+\ngC3ns7+iMC6IchH+scwyQrRNqf/1oA1YS53hhvhrxNwhRfp/9/jxwuBxRWf17kyM\nmeFUplBpVIpPqvxJSqCQzLimKwtK3cf+WuHE4zHlyQKBgQDJmYVKWl2DezbjbwMN\nqoI7s3yaATV9tgeFp3W+4X2SlUKrMLOL+bXPIX/MGELEJB5+zrf99DBs6v37qDXX\nMe+RDLW6xDbOAzoOD6eOOwHVdyObbpe3FooibjD7VuS3XRKCYzFrR6lZAgqJebsp\nrTcjp1hMWHGSQFIFrKxZcnlkFwKBgQDIarB1N9lz7q5ZCokbYy3EnszpWnZWk1By\nDqBNeoAns5MMdPMoo4mxaxePEBaYUmxTIEMnLXuKaQRdKBcKDGGOCIfsw/eH+U7I\nL6pVD8I1UCjB3eQnTyoG6Vqri6AC2Vf1svs4+7On3u6ePJmQu0//4WRlGMHtfE9C\nTvELH9lDzQKBgQCrQcBKRnO0MuKQ2Ag2/sb9Yl8SEL7ZGN5Q+s36pmFfOW7WMFwG\nJ837tFB1F5L4PlqtjHwevua4T/QMaXu7YE9L4AktLGwGHBWgRkoneBb5uOjFrHAz\nd3FHCGaRzOIkpmsH2q3rnYfN9f7vhDqrj9sMbaeDy4pHHF7RNTuADM/0ZwKBgQDB\nae0XgqmR74NEnR1KWAGgYhyhC1NvI8Yb/K+JdjJdnjjIackMrB7DIPXgdAdKQykV\nY+pK0eMK5WR3vqvVX7N6DhOXVFv7VodIPG/mnUmwh8Z9qfV4VjbZ6rQ9H4dxmG0B\nyhQWnxp3ZHbmMNeGzK5c5BkuU6E73p7jACoxsS/M9QKBgQCwkaBKHGK0a/M07BJn\n7mNT2peziAIKMVH7AcLY6F2b5k5G8lRUwRmytrbLf0kh+NcMxeu18PNVEVbCS2IV\nNsX63zEUyS9bttTcaCJ9mieVCsIhOlEzdzp2+ovhOqxQucVwwdwNdEdUoBqdKUIZ\nwlUrzrTKhF9VpZo+RQMaL7baIQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "stalkmarketvision@pristockmarket.iam.gserviceaccount.com",
+  "client_id": "101548405064599407881",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/stalkmarketvision%40pristockmarket.iam.gserviceaccount.com"
+}
