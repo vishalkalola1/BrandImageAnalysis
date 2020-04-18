@@ -4,7 +4,7 @@ from .models import User, UploadFile
 class LoginForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['uname','upassword']
+        fields = ['uemail','upassword']
 
 class RegisterForm(forms.ModelForm):
     class Meta:

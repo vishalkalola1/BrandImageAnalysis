@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
+<head>{% block head %}
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+    {% endblock %}
 </head>
 <body>
+
     {% block content %}{% endblock %}
 </body>
 </html>

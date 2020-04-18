@@ -1,21 +1,19 @@
 {% extends "BrandAnalysisApp/Base.html" %}
-
+{% load static %}
+{% block head %} <link rel="stylesheet" href="{% static 'css/signin.css' %}"> {% endblock %}
 {% block title %} SignIn Page {% endblock %}
 {% block content %}
 {% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
 
 <div class="login-page">
     <div class="form">
+        <h1> Login </h1>
         <form class="login-form" action="" method="post">
             {% csrf_token %}
-            <input type="text" placeholder="email id" name="uname" required/>
+            <input type="text" placeholder="email id" name="uemail" required/>
             <input type="password" placeholder="password" name="upassword" required/>
             <button>login</button>
             <p class="message">Not registered? <a href="/register">Create an account</a></p>
-            <p>OR</p>
-        </form>
-        <form class="login-form" action="/home" method="get">
-            <button>Guest</button>
         </form>
     </div>
 </div>

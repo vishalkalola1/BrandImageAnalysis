@@ -1,8 +1,11 @@
 from django.forms import modelformset_factory
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django import forms
 from .forms import LoginForm, RegisterForm, UploadFileForm
 from .models import User,UploadFile
 from django.contrib.auth import authenticate, login
+from django.urls import reverse
 import os
 from google.cloud import vision
 from google.cloud.vision import types
@@ -11,21 +14,25 @@ import base64
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
 
+def home(request):
+    context = {}
+    if request.method == "POST":
+        print("Test")
+    else:
+        return render(request, 'BrandAnalysisApp/index.html', context)
+
+
 def login(request):
     context = {}
     if request.method == "POST":
-        userform = LoginForm(request.POST)
-        if userform.is_valid():
-            email = userform.instance.uemail
-            password = userform.instance.upassword
-            user = authenticate(request, uemail=email, upassword=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-            else:
-                #login Fail
-                context["error"] = "User is not authenticated"
-                return render(request, 'BrandAnalysisApp/SignIn.html', context)
+        username = request.POST['uemail']
+        password = request.POST['upassword']
+        user = User.objects.get(uemail=username, upassword=password)
+        if user.upassword == password:
+            return HttpResponseRedirect(reverse("home"))
+        else:
+            context["error"] = "User is not authenticated"
+            return render(request, 'BrandAnalysisApp/SignIn.html', context)
     else:
         userform = LoginForm()
         context["form"] = userform
@@ -35,6 +42,9 @@ def register(request):
     context = {}
     if request.method == "POST":
         registerform = RegisterForm(request.POST)
+        if registerform is None:
+            context["error"] = "User already exist"
+            return render(request, 'BrandAnalysisApp/Register.html', context)
         if registerform.is_valid():
             count = User.objects.filter(uemail=registerform.instance.uemail).count()
             if count == 0:
@@ -43,10 +53,13 @@ def register(request):
             else:
                 context["error"] = "User already exist"
                 return render(request,'BrandAnalysisApp/Register.html',context)
+        else:
+            context["error"] = "User already exist"
+            return render(request, 'BrandAnalysisApp/Register.html', context)
     else:
         return render(request,'BrandAnalysisApp/Register.html',context)
 
-def home(request):
+def uploadImage(request):
     context = {}
     if request.method == "POST":
 
@@ -79,3 +92,6 @@ def callgoogleVisionAPi(obj):
     print(data)
     response = requests.post(url, data=data, headers={"Content-Type": "application/json"})
     print(response)
+
+
+
