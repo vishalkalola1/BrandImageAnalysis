@@ -1,14 +1,15 @@
 from django import forms
-from .models import User, UploadFile
+from .models import UserCustom, UploadFile
 
 class LoginForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = UserCustom
         fields = ['uemail','upassword']
+
 
 class RegisterForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = UserCustom
         fields = ['uname','upassword','uemail']
 
 

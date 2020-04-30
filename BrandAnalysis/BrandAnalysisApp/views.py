@@ -3,9 +3,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django import forms
 from .forms import LoginForm, RegisterForm, UploadFileForm
-from .models import User,UploadFile
+from .models import UserCustom,UploadFile
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from django.contrib.auth.models import User,auth
+
 import os
 from google.cloud import vision
 from google.cloud.vision import types
@@ -27,11 +29,18 @@ def login(request):
     if request.method == "POST":
         username = request.POST['uemail']
         password = request.POST['upassword']
-        user = User.objects.get(uemail=username, upassword=password)
-        if user.upassword == password:
-            return HttpResponseRedirect(reverse("home"))
-        else:
-            context["error"] = "User is not authenticated"
+        try:
+            user = UserCustom.objects.get(uemail=username)
+            if user.uemail == username and user.upassword == password:
+                if user.utype == "Admin":
+                    return HttpResponseRedirect(reverse("home"))
+                else:
+                    return HttpResponseRedirect(reverse("uploadImage"))
+            else:
+                context["error"] = "User is not authenticated"
+                return render(request, 'BrandAnalysisApp/SignIn.html', context)
+        except:
+            context["error"] = "User is not register with this email id"
             return render(request, 'BrandAnalysisApp/SignIn.html', context)
     else:
         userform = LoginForm()
@@ -41,28 +50,23 @@ def login(request):
 def register(request):
     context = {}
     if request.method == "POST":
+        username = request.POST['uemail']
+        password = request.POST['upassword']
         registerform = RegisterForm(request.POST)
-        if registerform is None:
-            context["error"] = "User already exist"
-            return render(request, 'BrandAnalysisApp/Register.html', context)
         if registerform.is_valid():
-            count = User.objects.filter(uemail=registerform.instance.uemail).count()
-            if count == 0:
-                registerform.save()
-                return redirect('home')
-            else:
-                context["error"] = "User already exist"
-                return render(request,'BrandAnalysisApp/Register.html',context)
+            registerform.save()
+            return HttpResponseRedirect(reverse("uploadImage"))
         else:
-            context["error"] = "User already exist"
-            return render(request, 'BrandAnalysisApp/Register.html', context)
+            context["error"] = "Email already register."
+            return render(request,'BrandAnalysisApp/Register.html',context)
     else:
+        userform = RegisterForm()
+        context["form"] = userform
         return render(request,'BrandAnalysisApp/Register.html',context)
 
 def uploadImage(request):
     context = {}
     if request.method == "POST":
-
         imageForms = UploadFileForm(request.POST, request.FILES)
         if imageForms.is_valid():
             files = imageForms.files.getlist('file')
@@ -71,13 +75,14 @@ def uploadImage(request):
                 handle_uploaded_file(file, file.name)
         else:
             context["error"] = "File not uploaded try again later"
-        return redirect('home')
+        context["error"] = "Image uploaded successfully"
+        return render(request, 'BrandAnalysisApp/UploadImage.html',context)
     else:
         return render(request, 'BrandAnalysisApp/UploadImage.html',context)
 
 def handle_uploaded_file(f,name):
     encoded_string = base64.b64encode(f.read()).decode('UTF-8')
-    callgoogleVisionAPi(encoded_string)
+    # callgoogleVisionAPi(encoded_string)
 
     filename_w_ext = os.path.basename(name)
     path = '/Users/vishal/Documents/Projects/PRI/BrandAnalysis/BrandAnalysisApp/Media/' + filename_w_ext
