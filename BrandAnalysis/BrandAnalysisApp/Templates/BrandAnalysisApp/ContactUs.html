@@ -1,0 +1,28 @@
+{% extends "BrandAnalysisApp/Base.html" %}
+{% load static %}
+{% block head %} <link rel="stylesheet" href="{% static 'css/ContactUs.css' %}"> {% endblock %}
+{% block title %} Contact Us {% endblock %}
+{% block content %}
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+
+<h1 align="center">Contact Us</h1>
+
+<div class="container">
+  <form action="">
+    <label for="fname">First Name</label>
+    <input type="text" id="fname" name="firstname" placeholder="Your name.." required>
+
+    <label for="lname">Last Name</label>
+    <input type="text" id="lname" name="lastname" placeholder="Your last name.." required>
+
+    <label for="lemail">Email Address</label>
+    <input type="text" id="lemail" name="email" placeholder="Your email address.." required>
+
+    <label for="subject">Subject</label>
+    <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px" required></textarea>
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
+{% endblock %}

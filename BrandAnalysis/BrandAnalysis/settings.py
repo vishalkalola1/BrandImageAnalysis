@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'six'
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BrandAnalysis.wsgi.application'
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'vishalkalola196@gmail.com'
+EMAIL_HOST_PASSWORD = 'VishalK@125'
+EMAIL_PORT = 587
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
