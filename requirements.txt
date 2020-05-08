@@ -1,3 +1,6 @@
 Django==3.0.4
 mysql-connector==2.2.9
-pymysql
+PyMySQL
+six
+google-cloud-vision
+Pillow
