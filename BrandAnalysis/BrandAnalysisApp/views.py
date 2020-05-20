@@ -24,7 +24,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
 def home(request):
     context = {}
     if request.method == "POST":
-        print("Test")
+        return render(request, 'BrandAnalysisApp/index.html', context)
     else:
         return render(request, 'BrandAnalysisApp/index.html', context)
 
@@ -38,8 +38,8 @@ def login(request):
             user = UserCustom.objects.get(uemail=username)
             if user.uemail == username and user.upassword == password:
                 if user.uactivated:
-                    if user.utype == "Admin":
-                        return HttpResponseRedirect(reverse("home"))
+                    if user.utype.lower() == "admin":
+                        return HttpResponseRedirect(reverse("adminHome"))
                     else:
                         return HttpResponseRedirect(reverse("uploadImage"))
                 else:
@@ -138,8 +138,6 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.uactivated = True
         user.save()
-        # login(request, user)
-        # return redirect('home')
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
@@ -151,3 +149,12 @@ def forgotpassword(request):
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
     else:
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
+
+
+def adminHome(request):
+    context = {}
+    if request.method == "POST":
+        context["error"] = ""
+        return render(request, 'BrandAnalysisApp/homeadmin.html', context)
+    else:
+        return render(request, 'BrandAnalysisApp/homeadmin.html', context)

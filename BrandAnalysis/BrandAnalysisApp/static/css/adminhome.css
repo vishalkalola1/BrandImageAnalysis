@@ -1,0 +1,20 @@
+* {box-sizing: border-box;}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+    overflow: hidden;
+    padding: 10px 5px;
+    background-color:red;
+    height:80px;
+}
+
+.imgheader{
+    width:300px;
+    height:60px;
+    display: block;
+    margin: auto auto;
+}

@@ -102,3 +102,19 @@ form{
     margin-top: 0;
   }
 }
+
+footer {
+    position:fixed;
+	height: 20px;
+    width: 100%;
+    background-color:red;
+    bottom:0;
+}
+
+p.copyright {
+    color: #fff;
+    margin-top:2px;
+    height:100%;
+    font-size:15px;
+	text-align: center;
+}

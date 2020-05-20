@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "BrandAnalysisApp/Base.html" %}
+{% load static %}
+{% block head %}
 	<title> Contact Us | Stalk Market | Image Analysis</title>
-	<link rel="stylesheet" href="StyleSheet\contactus.css">
-
-</head>
-<body>
-
+    <link rel="stylesheet" href="{% static 'css/contactus.css' %}">
+{% endblock %}
+{% block content %}
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
 <div class="container">
 	<div class="header_contact" >
 		<h2>Contact Us</h2>
@@ -14,59 +13,56 @@
 	</div>
 	
 
-  <div class="column">
-      <form action="/action_page.php">
-        <label for="fname">Full Name</label>
-        <input type="text" id="fname" name="firstname" placeholder="Your fullname" required>
-        <label for="email">Work Email</label>
-        <input type="email" id="wemail" name="wemail" required placeholder="Your email">
-        <label for="tel">Phone</label>
-        <input type="tel" id="Phone" name="tel"  placeholder="Valid Phone">
-        <label for="country">Country</label>
-        <select id="country" name="country">
-          <option value="australia">France</option>
-          <option value="canada">UK</option>
-          <option value="usa">Spain</option>
-        </select>
-
-        <label for="subject">Additional Details</label>
-        <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea>
-        <input type="submit" value="Inquire">
-      </form>
-    </div>
-
-
-  <div class="row">
     <div class="column">
-      <div class="col-md-6 reason-content">
-            <h2>For general inquiries</h2>
-            <p>Call us at: 
-            <a href="tel:#">1-000-000-0000</a></p>
-            <p>or send us an email at</p>
-            <a href="#">contact@stalkmarket.com</a>
-            <br>
-            <br>
-            <p style="margin:0;">Hours of Operation</p>
-            <p>Monday to Friday: 8:00am - 6:00pm GMT+2</p>
-            <br>
+        <form action="/action_page.php">
+            <label for="fname">Full Name</label>
+            <input type="text" id="fname" name="firstname" placeholder="Your fullname" required>
+            <label>Work Email</label>
+            <input type="email" id="wemail" name="wemail" required placeholder="Your email">
+            <label>Phone</label>
+            <input type="tel" id="Phone" name="tel"  placeholder="Valid Phone">
+            <label for="country">Country</label>
+            <select id="country" name="country">
+                <option value="australia">France</option>
+                <option value="canada">UK</option>
+                <option value="usa">Spain</option>
+            </select>
 
-            <div class="map">
-            	<!-- Google Map API Script here -->
-            	<img src="google-maps-api.jpg" alt="Nature" class="map">
-
-            </div>
-
-
-            <h2>For StalkMarket Support</h2>
-            Stalk Market customers, <a href="#">LOG IN</a> to talk to our team
-            <br>
-            <a href="#"><img alt="Stalk Market" title="Stalk Market | Image Analysis" src="logo.png" width="300"></a>
-          </div>
+            <label for="subject">Additional Details</label>
+            <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea>
+            <input type="submit" value="Inquire">
+        </form>
     </div>
-    
-  </div>
+
+
+    <div class="row">
+        <div class="column">
+            <div class="col-md-6 reason-content">
+                <h2>For general inquiries</h2>
+                <p>Call us at:
+                <a href="tel:#">1-000-000-0000</a></p>
+                <p>or send us an email at</p>
+                <a href="#">contact@stalkmarket.com</a>
+                <br>
+                <br>
+                <p style="margin:0;">Hours of Operation</p>
+                <p>Monday to Friday: 8:00am - 6:00pm GMT+2</p>
+                <br>
+
+                <div class="map">
+            	    <!-- Google Map API Script here -->
+            	    <img src="{% static 'assets/google-maps-api.jpg' %}" alt="Nature" class="map">
+                </div>
+
+                <h2>For StalkMarket Support</h2>
+                Stalk Market customers, <a href="#">LOG IN</a> to talk to our team
+                <br>
+                <a href="#"><img alt="Stalk Market" title="Stalk Market | Image Analysis" src="{% static 'assets/logo.png' %}" width="300"></a>
+            </div>
+        </div>
+        </div>
 </div>
-
-
-</body>
-</html>
+<footer>
+    <p class="copyright">Copyright ©️ Stalk Market 2020</p>
+</footer>
+{% endblock %}

@@ -1,10 +1,12 @@
 {% extends "BrandAnalysisApp/Base.html" %}
 {% load static %}
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/adminhome.css' %}">
 {% endblock %}
 {% block title %} This is the home page {% endblock %}
 {% block content %}
 {% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
-
+    <div class="header">
+        <img class="imgheader" src="{% static 'assets/logo.png' %}">
+    </div>
 {% endblock %}
