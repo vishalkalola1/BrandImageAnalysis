@@ -9,4 +9,57 @@
     <div class="header">
         <img class="imgheader" src="{% static 'assets/logo.png' %}">
     </div>
+
+    <div>
+        <br/>
+        <h1 style="color:blue;width:1050px;margin-left:auto;margin-right:auto;margin-top:0px;margin-bottom:10px;">Our Clients</h1>
+        <table style="margin-left:auto;margin-right:auto;">
+            {% for question in questions %}
+                <tr style="padding:10px;">
+                    {% for questiontemp in question %}
+                        <td style="width: 350px; !important; height: 270px; !important;padding:10px;">
+                            <div class="card" style="background-color:white;width: 340px; height: 260px;overflow: hidden;">
+                                <div class="titlediv">
+                                    <div style="margin-top:18px;">
+                                        <label style="color: white;font-size: 19px;">{{ questiontemp }}</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="font-size:0;">
+                                        <div style="width:50%; display:inline-table;align: left;">
+                                            <label style="color: grey;font-size: 15px;text-align: left;width:100%;margin:0;"> vishal </label>
+                                        </div>
+                                        <div style="width:50%; display:inline-table;">
+                                            <label style="color: green;font-size: 15px;width:100%;"> vishal </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="margin-top:18px;">
+                                        <label style="color: black;font-size: 19px;">{{ questiontemp }}</label>
+                                    </div>
+                                    <div style="margin-top:18px;">
+                                        <label style="color: black;font-size: 19px;">{{ questiontemp }}</label>
+                                    </div>
+                                </div>
+
+                                <div class="div">
+                                    <button class="buttonview" onclick="location.href='{% url 'viewcompany' %}'">View</button>
+                                    <button class="buttonedit" onclick="location.href='{% url 'editcompany' %}'">Edit</button>
+                                    <button class="buttondelete" onclick="location.href='{% url 'deletecompany' %}'">Delete</button>
+                                </div>
+                                <div>
+                                    <button class="buttonupload" onclick="location.href='{% url 'uploadImage' %}'">Upload</button>
+                                </div>
+                            </div>
+                        </td>
+                    {% endfor %}
+                </tr>
+           {% endfor %}
+        </table>
+    </div>
+
+<!--    <script>-->
+<!--        alert("{{ alert }}")-->
+<!--    </script>-->
 {% endblock %}

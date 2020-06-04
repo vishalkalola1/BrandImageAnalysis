@@ -8,7 +8,7 @@ body {
 .header {
     overflow: hidden;
     padding: 10px 5px;
-    background-color:red;
+    background-color:gray;
     height:80px;
 }
 
@@ -17,4 +17,65 @@ body {
     height:60px;
     display: block;
     margin: auto auto;
+}
+
+.card {
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+.titlediv{
+    background-color:blue;
+    width:100%;
+    height:50px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.div {
+  display:flex;
+  justify-content:space-around;
+}
+
+.buttonview {
+  width: 100%;
+  margin: 10px; /* or whatever you like */
+  margin-left:20px;
+  background-color:blue;
+  height:30px;
+  color: white;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.buttonedit {
+  width: 100%;
+  margin: 10px; /* or whatever you like */
+  background-color:green;
+  height:30px;
+  color: white;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.buttondelete {
+  width: 100%;
+  margin: 10px; /* or whatever you like */
+  margin-right:20px;
+  background-color:red;
+  height:30px;
+  color: white;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.buttonupload {
+  width: 90%;
+  background-color:green;
+  height:40px;
+  color: white;
+  font-size: 15px;
+  border-radius: 10px;
 }

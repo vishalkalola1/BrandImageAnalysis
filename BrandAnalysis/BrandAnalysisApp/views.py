@@ -1,10 +1,9 @@
-from django.forms import modelformset_factory
+import io
+import os
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
-from django import forms
+from django.shortcuts import render
 from .forms import LoginForm, RegisterForm, UploadFileForm
-from .models import UserCustom,UploadFile
-from django.contrib.auth import authenticate, login
+from .models import UserCustom,UploadFileAnnotations, LogoAnnotations
 from django.urls import reverse
 from django.contrib.auth.models import User,auth
 from django.contrib.sites.shortcuts import get_current_site
@@ -13,11 +12,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .Controllers.TokenGenerator import account_activation_token
 from django.core.mail import EmailMessage
-import os
+from django.utils import timezone
 from google.cloud import vision
 from google.cloud.vision import types
-import requests
-import base64
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
 
@@ -31,13 +28,27 @@ def home(request):
 
 def login(request):
     context = {}
+
+    if request.COOKIES.get('user_id'):     # Auto Login Code
+        type = request.COOKIES.get('user_role')
+        if type.lower() == "admin":
+            return HttpResponseRedirect(reverse("adminHome"))
+        else:
+            return HttpResponseRedirect(reverse("uploadImage"))
+
+
     if request.method == "POST":
         username = request.POST['uemail']
         password = request.POST['upassword']
         try:
             user = UserCustom.objects.get(uemail=username)
             if user.uemail == username and user.upassword == password:
+                user.updatedon = timezone.now()
+                user.save()
                 if user.uactivated:
+                    request.COOKIES['user_id'] = user.id
+                    request.COOKIES['user_email'] = user.uemail
+                    request.COOKIES['user_role'] = user.utype
                     if user.utype.lower() == "admin":
                         return HttpResponseRedirect(reverse("adminHome"))
                     else:
@@ -62,6 +73,7 @@ def register(request):
         registerform = RegisterForm(request.POST)
         if registerform.is_valid():
             user = registerform.save(commit=False)
+            tempuser = user()
             user.uactivated = False
             registerform.save()
             current_site = get_current_site(request)
@@ -104,22 +116,45 @@ def uploadImage(request):
         return render(request, 'BrandAnalysisApp/UploadImage.html',context)
 
 def handle_uploaded_file(f,name):
-    encoded_string = base64.b64encode(f.read()).decode('UTF-8')
-    # callgoogleVisionAPi(encoded_string)
-
     filename_w_ext = os.path.basename(name)
     path = '/Users/vishal/Documents/Projects/PRI/BrandAnalysis/BrandAnalysisApp/Media/' + filename_w_ext
-    print(path)
+    callgoogleVisionAPi(path)
     with open(path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
 def callgoogleVisionAPi(obj):
-    url = 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDjL9v7LlXtC2gnr4wu8SvOHGa70Ej25UI'
-    data = { "requests": [{ "image": { "content": obj }, "features": [{"maxResults": 10, "type": "OBJECT_LOCALIZATION"},]}]}
-    print(data)
-    response = requests.post(url, data=data, headers={"Content-Type": "application/json"})
-    print(response)
+
+    client = vision.ImageAnnotatorClient()
+
+    # The name of the image file to annotate
+    file_name = os.path.abspath(obj)
+
+    # Loads the image into memory
+    with io.open(file_name, 'rb') as image_file:
+        content = image_file.read()
+
+    image = types.Image(content=content)
+
+    # Performs label detection on the image file
+    response = client.label_detection(image=image)
+    labels = response.label_annotations
+
+    print('Labels:')
+    for label in labels:
+        print(label.description)
+
+    # Performs label detection on the image file
+    response = client.logo_detection(image=image)
+    logos = response.logo_annotations
+    for logo in logos:
+        print(logo.description)
+        logoobj = LogoAnnotations()
+        logoobj.description = logo.description
+
+
+
+
 
 def contactus(request):
     context = {}
@@ -157,4 +192,30 @@ def adminHome(request):
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/homeadmin.html', context)
     else:
+        context["questions"] = [["sdf", "sfsf", "1"], ["2"]]
+
         return render(request, 'BrandAnalysisApp/homeadmin.html', context)
+
+
+def editcompany(request):
+    context = {}
+    if request.method == "POST":
+        context["error"] = ""
+        return render(request, 'BrandAnalysisApp/editchanel.html', context)
+    else:
+        return render(request, 'BrandAnalysisApp/editchanel.html', context)
+
+def viewcompany(request):
+    context = {}
+    if request.method == "POST":
+        context["error"] = ""
+        return render(request, 'BrandAnalysisApp/clientdetail.html', context)
+    else:
+        return render(request, 'BrandAnalysisApp/clientdetail.html', context)
+
+
+def delete(request):
+    context = {}
+    return render(request, 'BrandAnalysisApp/clientdetail.html', context)
+    # context["alert"] = "Are you sure you want to delete?"
+

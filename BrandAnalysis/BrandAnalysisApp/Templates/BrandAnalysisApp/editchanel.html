@@ -1,0 +1,132 @@
+{% extends "BrandAnalysisApp/Base.html" %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/StyleSheet/stylesheet.css">
+	<link rel="stylesheet" href="{% static 'css/editchanel.css' %}">
+{% endblock %}
+{% block title %} Report| Stalk Market | Image analysis for Brand Marketing {% endblock %}
+{% block content %}
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+    <div class="header">
+        <img class="imgheader" src="{% static 'assets/logo.png' %}">
+    </div>
+	<br/>
+	<div class="container" >
+		<div class="row pt-4 pl-3 bg-light header" >
+			<h2>Edit Chanel</h2>
+		</div>
+		<!-- form -->
+		<form class="needs-validation" novalidate>
+		<div class="row  bg-light" >
+			<div class="col-md-6">
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label" id="validationCustom01" value="Mark" required>Name</label>
+					<div class="col-sm-11">
+						<input type="Name" class="form-control" id="inputEmail3" placeholder="Full Name" required>
+						<div class="valid-feedback">Looks good!</div>
+					</div>
+				</div>
+					
+				<div class="form-group row">
+				    <label class="col-sm-3 col-form-label">Start Date</label>
+				    <div class="col-sm-11">
+				      <input type="Date" class="form-control" id="inputEmail3">
+				    </div>
+				</div>
+
+				<div class="form-group row">
+				    <label class="col-sm-2 col-form-label">Email</label>
+				    <div class="col-sm-11">
+						<input type="email" class="form-control" id="inputEmail3" placeholder="Email" required="">
+						<div class="invalid-feedback">plese provide valid email (eg. john@gmail.com) </div>
+				    </div>
+				</div>
+
+				<div class="form-group row">
+				    <label  class="col-sm-2 col-form-label">Supervisor</label>
+				    <div class="col-sm-11">
+						<input class="form-control" id="inputEmail3" placeholder="Supervisor Name" required="">
+				    </div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				
+				<div class="form-group row">
+				    <label class="col-sm-4 col-form-label">Stalk Market ID :</label>
+				    <div class="col-sm-11">
+						<input type="ID" class="form-control" id="inputEmail3" placeholder="Stalk Market ID">
+				    </div>
+				</div>
+					
+				<div class="form-group row">
+					<label class="col-sm-3 col-form-label">Status</label>
+				    <div class="col-sm-11">
+					    <select class="custom-select">
+							  <option selected>Select Status</option>
+							  <option value="1">Active</option>
+							  <option value="2">Inactive</option>
+							  <option value="3">Suspend</option>
+						</select>
+				    </div>
+				</div>
+
+				<div class="form-group row">
+				    <label class="col-sm-2 col-form-label mask">Phone</label>
+				    <div class="col-sm-11">
+						<input type="tel" class="form-control" id="inputEmail3" pattern="[+][0-9]{1,3}[0-9]{10}" placeholder="+9770000000000" required="">
+						<div class="invalid-feedback">plese provide valid phone number (eg. +9770000000000 ) </div>
+				    </div>
+				</div>
+
+				<div class="form-group row">
+				    <label  class="col-sm-4 col-form-label">Report Frequency</label>
+				    <div class="col-sm-11">
+					    <select class="custom-select">
+							  <option selected>Select Status</option>
+							  <option value="1">Weekly</option>
+							  <option value="2">Twice in a Month</option>
+							  <option value="3">Monthly</option>
+						</select>
+				    </div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row p-4 bg-light">
+			<div class="col d-flex justify-content-end">
+				<input type="submit" class="btn btn-primary mr-2 " type="submit" value="Submit">
+				<input class="btn btn-primary" type="reset" value="Reset">
+			</div>
+		</div>
+		</form>
+	</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<!-- JavaScript for disabling form submissions if there are invalid fields -->
+    <script>
+	(function() {
+	  'use strict';
+	  window.addEventListener('load', function() {
+	    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	    var forms = document.getElementsByClassName('needs-validation');
+	    // Loop over them and prevent submission
+	    var validation = Array.prototype.filter.call(forms, function(form) {
+	      form.addEventListener('submit', function(event) {
+	        if (form.checkValidity() === false) {
+	          event.preventDefault();
+	          event.stopPropagation();
+	        }
+	        form.classList.add('was-validated');
+	      }, false);
+	    });
+	  }, false);
+	})();
+	</script>
+{% endblock %}

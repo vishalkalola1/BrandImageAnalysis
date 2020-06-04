@@ -1,0 +1,137 @@
+{% extends "BrandAnalysisApp/Base.html" %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/StyleSheet/stylesheet.css">
+	<link rel="stylesheet" href="{% static 'css/editchanel.css' %}">
+{% endblock %}
+{% block title %} Report| Stalk Market | Image analysis for Brand Marketing {% endblock %}
+{% block content %}
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+	<div class="header">
+        <img class="imgheader" src="{% static 'assets/logo.png' %}">
+    </div>
+	<br/>
+	<div class="container" >
+		<div class="row p-2 pl-3 bg-light header border-left border-info" >
+			<h2>Chanel Report Dashboard</h2>
+		</div>
+		<div class="row  bg-light" >
+
+			<!-- first column ----------------------------------------------------------------------------- -->
+			<div class="col-md-6 border-right" style="border-color: #ccc">
+				<div class="col-md-10">
+				
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+					    <label class="col-sm-3 col-form-label rounded-left" required>Name</label>
+					    <div class="col-sm-9" allignment="auto">
+					        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="John Smith South">
+					    </div>
+					</div>
+					
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+					    <label class="col-sm-3 col-form-label">Start Date</label>
+					    <div class="col-sm-9">
+					       <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="may 01 2020">
+					    </div>
+				  	</div>
+
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+				    <label class="col-sm-3 col-form-label">Email</label>
+				    <div class="col-sm-9">
+				      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="john@gmail.com">
+				    </div>
+				  	</div>
+
+
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+				    <label  class="col-sm-3 col-form-label">Supervisor</label>
+				    <div class="col-sm-9">
+				      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Adam Smith">
+				    </div>
+				  	</div>	
+
+				  	<div class="form-group row border-bottom" style="border-color: #ccc">
+				    <label  class="col-sm-3 col-form-label">No. of Image</label>
+				    <div class="col-sm-9">
+				      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="100K ">
+				    </div>
+				  	</div>	
+
+				  	<div class="form-group row border-bottom" style="border-color: #ccc">
+				    	<label  class="col-sm-3 col-form-label">Latest Report</label>
+					    <div class=" col-sm-9">
+							<img src="images/pdf-icon.png" height="auto" width="50" alt="View your Latest Report" title="View your Latest Report" data-toggle="modal" data-target=".bd-example-modal-lg"> 
+
+							<!-- Large modal -->
+
+							<div class="modal fade bd-example-modal-lg border-bottom" style="border-color: #ccc" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							  <div class="modal-dialog modal-lg">
+							    <div class="modal-content">
+							      	<iframe src="https://web.stanford.edu/class/ee368/Project_06/Project/ee368_reports/ee368group26.pdf" width="100%" height="500px">
+		    						</iframe>
+							    </div>
+							  </div>
+							</div>							
+						</div>
+				  	</div>
+
+				</div>
+			</div> 
+			
+			<!-- second column ----------------------------------------------------------------------------- -->
+			<div class="col-md-6 text-muted">
+				<div class="col-md-10 pl-4" >
+					
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+						<label class="col-sm-4 col-form-label">Stalk Market ID :</label>
+						<div class="col-sm-8">
+					      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="SM01201">
+					    </div>
+					</div>
+						
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+						<label class="col-sm-4 col-form-label">Status</label>
+					    <div class="col-sm-8">
+					      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Active">
+					    </div>
+					</div>
+
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+					    <label class="col-sm-4 col-form-label mask">Phone</label>
+					    <div class="col-sm-8">
+					      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="+33 0000000000">
+						</div>
+					</div>
+
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+					    <label  class="col-sm-4 col-form-label">Report Frequency</label>
+					    <div class="col-sm-8">
+					    	<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Monthly">
+					    </div>
+					</div>
+
+					<div class="form-group row border-bottom" style="border-color: #ccc">
+					    <label  class="col-sm-4 col-form-label">No. of Report Generated</label>
+					    <div class="col-sm-8">
+					    	<input type="text" readonly class="form-control-plaintext" id="staticEmail" value="3">
+					    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- View all report botton -------------.--------------------------------------------------------- -->
+		<div class="row pb-4 bg-light ">
+		    <div class=" col-sm-12 d-flex justify-content-end ">
+				<a href="report.html" class="btn btn-primary text-white"  type="reset" value="View All Report">View All Report</a>
+				<!-- Large modal -->								
+			</div>
+	  	</div>
+	</div> <!-- end of container---------------------------------------- -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+{% endblock %}
