@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserCustom, UploadFileAnnotations
+from .models import UserCustom, uploadFile
 
 class LoginForm(forms.ModelForm):
     class Meta:
@@ -13,7 +13,7 @@ class RegisterForm(forms.ModelForm):
 
 class UploadFileForm(forms.ModelForm):
     class Meta:
-        model = UploadFileAnnotations
-        fields = ['file','userid','title']
+        model = uploadFile
+        fields = ['file']
 
 
