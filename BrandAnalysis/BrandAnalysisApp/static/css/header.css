@@ -1,0 +1,13 @@
+.header {
+    overflow: hidden;
+    padding: 10px 5px;
+    background-color:gray;
+    height:80px;
+}
+
+.imgheader{
+    width:300px;
+    height:60px;
+    display: block;
+    margin: auto auto;
+}

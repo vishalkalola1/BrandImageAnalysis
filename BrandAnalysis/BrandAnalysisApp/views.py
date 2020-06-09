@@ -2,8 +2,8 @@ import io
 import os
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from .forms import LoginForm, RegisterForm, UploadFileForm
-from .models import UserCustom,UploadFileAnnotations, LogoAnnotations, LabelAnnotations, FaceAnnotations, ImagePropertiesAnnotation, FullTextAnnotation, LandmarkAnnotations, LocationAnnotations, LocalizedObjectAnnotations, SafeSearchAnnotation, TextAnnotations, LanguageAnnotations
+from .forms import LoginForm, RegisterForm, UploadFileForm, EditUserForm
+from .models import UserCustom,UploadFileAnnotations, LogoAnnotations, LabelAnnotations, FaceAnnotations, ImagePropertiesAnnotation, FullTextAnnotation, LandmarkAnnotations, LocationAnnotations, LocalizedObjectAnnotations, SafeSearchAnnotation, TextAnnotations, LanguageAnnotations, ReportTable
 from django.urls import reverse
 from django.contrib.auth.models import User,auth
 from django.contrib.sites.shortcuts import get_current_site
@@ -37,7 +37,6 @@ def login(request):
                 return redirect("adminHome")
             else:
                 return redirect("uploadImage")
-
 
     if request.method == "POST":
         username = request.POST['uemail']
@@ -78,7 +77,7 @@ def register(request):
             try:
                 user = UserCustom.objects.get(uemail=username)
                 context["error"] = "Email already register."
-                return render(request, 'BrandAnalysisApp/Register.html', context)
+                return render(request, 'BrandAnalysisApp/clientregistration.html', context)
             except:
                 user = registerform.save(commit=False)
                 user.uactivated = False
@@ -88,7 +87,7 @@ def register(request):
                 message = render_to_string('BrandAnalysisApp/acc_active_email.html', {
                     'user': user,
                     'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.uemail)),
+                    'id': user.id,
                     'token': account_activation_token.make_token(user),
                 })
                 to_email = registerform.cleaned_data.get('uemail')
@@ -97,20 +96,19 @@ def register(request):
                 )
                 email.send()
                 context["error"] = 'Please confirm your email address to complete the registration'
-                return render(request, 'BrandAnalysisApp/Register.html', context)
+                return render(request, 'BrandAnalysisApp/clientregistration.html', context)
         else:
             context["error"] = "Email already register."
-            return render(request,'BrandAnalysisApp/Register.html',context)
+            return render(request,'BrandAnalysisApp/clientregistration.html',context)
     else:
         userform = RegisterForm()
         context["form"] = userform
-        return render(request,'BrandAnalysisApp/Register.html',context)
+        return render(request,'BrandAnalysisApp/clientregistration.html',context)
 
-def uploadImage(request):
+def uploadImage(request,id):
     context = {}
+    user = UserCustom.objects.get(id=id)
     if request.method == "POST":
-        userid = request.session.get("userid")
-        user = UserCustom.objects.get(id=userid)
         imageForms = UploadFileForm(request.POST, request.FILES)
         if imageForms.is_valid():
             files = imageForms.files.getlist('file')
@@ -122,6 +120,7 @@ def uploadImage(request):
             context["error"] = "File not uploaded try again later"
         return render(request, 'BrandAnalysisApp/UploadImage.html',context)
     else:
+        context["user"] = user
         return render(request, 'BrandAnalysisApp/UploadImage.html',context)
 
 def handle_uploaded_file(f,name,user):
@@ -283,10 +282,9 @@ def contactus(request):
     else:
         return render(request, 'BrandAnalysisApp/ContactUs.html',context)
 
-def activate(request, uidb64, token):
+def activate(request, id, token):
     try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = UserCustom.objects.get(uemail=uid)
+        user = UserCustom.objects.get(id=id)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
@@ -299,11 +297,26 @@ def activate(request, uidb64, token):
 def forgotpassword(request):
     context = {}
     if request.method == "POST":
-        context["error"] = ""
+        username = request.POST['uemail']
+        user = UserCustom.objects.get(uemail=username)
+        current_site = get_current_site(request)
+        mail_subject = 'verify your email id.'
+        message = render_to_string('BrandAnalysisApp/acc_active_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'id': user.id,
+            'token': account_activation_token.make_token(user),
+        })
+        email = EmailMessage(
+            mail_subject, message, to=[username]
+        )
+        email.send()
+        context["error"] = 'Please confirm your email address to complete the registration'
+        return render(request, 'BrandAnalysisApp/clientregistration.html', context)
+
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
     else:
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
-
 
 def adminHome(request):
     context = {}
@@ -311,29 +324,75 @@ def adminHome(request):
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/homeadmin.html', context)
     else:
-        context["questions"] = [["sdf", "sfsf", "1"], ["2"]]
+        users = UserCustom.objects.all()
+        count = 3
+        mainArray = []
+        for index in range(0, len(users), count):
+            tempArray = []
+            for subindex in range(index,index+count):
+                if subindex < len(users):
+                    reportobj = ReportTable.objects.filter(userid=users[subindex].id).order_by('-id')
+                    if len(reportobj) > 0:
+                        tempArray.append({"user":users[subindex],"reports":reportobj[0]})
+                    tempArray.append({"user": users[subindex], "reports": reportobj})
+
+                else:
+                    break
+            mainArray.append(tempArray)
+
+        context["questions"] = mainArray
         return render(request, 'BrandAnalysisApp/homeadmin.html', context)
 
-
-def editcompany(request):
+def editcompany(request,id):
     context = {}
+    user = UserCustom.objects.get(id=id)
+    count = len(ReportTable.objects.filter(userid=id))
     if request.method == "POST":
-        context["error"] = ""
-        return render(request, 'BrandAnalysisApp/editchanel.html', context)
-    else:
+        editform = EditUserForm(request.POST)
+        if editform.is_valid():
+            user.uname = editform.instance.uname
+            user.unumber = editform.instance.unumber
+            user.usemail = editform.instance.usemail
+            user.ureportfrequency = editform.instance.ureportfrequency
+            user.usname = editform.instance.usname
+            user.utoolusage = editform.instance.utoolusage
+            user.uactivated = (editform.instance.uactivated == 1)
+            user.updatedon = timezone.now()
+            user.save()
+            context["user"] = user
+            context["noreport"] = count
+            context["error"] = "Successfully updated data"
+        else:
+            context["error"] = "Something went wrong try again later"
         return render(request, 'BrandAnalysisApp/editchanel.html', context)
 
-def viewcompany(request):
+    else:
+        context["error"] = ""
+        context["user"] = user
+        context["noreport"] = count
+        context["form"] = EditUserForm()
+        return render(request, 'BrandAnalysisApp/editchanel.html', context)
+
+def viewcompany(request,id):
     context = {}
     if request.method == "POST":
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/clientdetail.html', context)
     else:
+        user = UserCustom.objects.get(id=id)
+        context["user"] = user
+        context["noreport"] = len(ReportTable.objects.filter(userid=id))
         return render(request, 'BrandAnalysisApp/clientdetail.html', context)
 
-
-def delete(request):
+def delete(request,id):
     context = {}
     return render(request, 'BrandAnalysisApp/clientdetail.html', context)
     # context["alert"] = "Are you sure you want to delete?"
+
+def logout(request):
+    try:
+        del request.session['userid']
+    except:
+        pass
+    return redirect('home')
 

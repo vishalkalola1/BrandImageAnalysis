@@ -1,13 +1,95 @@
 {% extends "BrandAnalysisApp/Base.html" %}
-{% block title %}This is the home page {% endblock %}
-{% block content %}
-{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+{% load static %}
+{% block title %} Upload Image {% endblock %}
 
+{% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+<div class="header" style="font-size:0;">
+	<img class="imgheader" src="{% static 'assets/logo.png' %}">
+</div>
+<br/>
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
 <form name = "form" method = "POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <label>Select image:</label>
-    <input type="file" name="file" accept="image/*" multiple>
-    <input type="submit">
-</form>
+	<div class="container bg-light p">
+		<div class="row ">
+			<div class="col-md-1  bg-info p">
+				<h4 style="color: #fff">upload</h4>
+			</div>
+			<hr style="width:100%; text-align:left; margin-left:0">
+		</div>
+		<div class="row  justify-content-center">
+			<div class="col-md-6">
+				<form>
+					<div class="form-group row" style="border-color: #ccc">
+					    <label class="col-sm-4 col-form-label rounded-left" required>Name</label>
+					    <div class="col-sm-8" allignment="auto">
+					        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{user.uname}}">
+					    </div>
+					</div>
 
+					<div class="form-group row">
+				    	<label class="col-sm-4 col-form-label">Stalk Market ID:</label>
+					    <div class="col-sm-8">
+					    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="SM - {{user.id}}">
+					    </div>
+					</div>
+
+
+					<div class="form-group row">
+						<label class="col-sm-5 col-form-label">Images to be Processed: </label>
+						<div class="input-group col-sm-7">
+							<div class="custom-file">
+							    <input type="file" name="file" accept="image/*" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" required multiple> <!-- I need file name here on label if single file select if its more then 1 file then i need "File 3 selected" -->
+							    <label class="custom-file-label" for="inputGroupFile01" id="choosefile" >Choose file</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row  bg-light pb-4">
+						<div class="col d-flex justify-content-end">
+							<input type="submit" class="btn btn-primary " value="Upload">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</form>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+        $('input[type="file"]').change(function(e){
+            var fileName = ''
+            if(e.target.files.count > 1){
+                filename = "file" + e.target.files.count + "selected"
+            }else{
+                filename = e.target.files[0].name;
+            }
+            console.log(filename)
+            document.getElementById('choosefile').innerHTML = filename
+        });
+    });
+    </script>
 {% endblock %}
+
+
+
+
+
+
+
+

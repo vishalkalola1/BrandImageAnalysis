@@ -1,0 +1,157 @@
+{% extends "BrandAnalysisApp/Base.html" %}
+{% load static %}
+{% block head %}
+		<!-- bootstrap linkup -->
+	   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+{% endblock %}
+{% block title %} Client Registration | Stalk Market {% endblock %}
+{% block content %}
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+	<div class="container bg-light ">
+		<!-- Header------------------------- -->
+		<div class="row">
+			<div class="col-3 p-3 bg-info">
+				<h3 style="color: #fff">Client Registration</h3>
+			</div>
+			<!-- <hr style="width:100%; text-align:left; margin-left:0">	 -->
+		</div>
+		<!-- form------------------------- -->
+		
+		<form class="needs-validation" method=post oninput='upassword.setCustomValidity(urpassword.value != upassword.value ? "Passwords do not match." : "")'>
+			{% csrf_token %}
+			<div class="row  bg-light pt-4" >
+				<div class="col-md-6">
+					<div class="form-group row">
+					    <label class="col-sm-4 col-form-label" id="validationCustom01" value="Mark" required>Company Name</label>
+					    <div class="col-sm-11">
+							<input type="Name" class="form-control" id="inputEmail3" placeholder="Company Name" name="uname" required>
+					    </div>
+					</div>
+						
+					<div class="form-group row">
+					    <label class="col-sm-2 col-form-label mask">Phone</label>
+					    <div class="col-sm-11">
+							<input type="tel" class="form-control" id="inputEmail3" pattern="[+][0-9]{1,3}[0-9]{10}" placeholder="+9770000000000" name="unumber" required>
+							<div class="invalid-feedback">please provide valid phone number (eg. +9770000000000 ) </div>
+					    </div>
+					</div>
+
+					<div class="form-group row">
+					    <label class="col-sm-5 col-form-label">Supervisor's Email</label>
+					    <div class="col-sm-11">
+					      <input type="email" class="form-control" id="inputEmail3" placeholder="Email" name="usemail" required>
+					      <div class="invalid-feedback">Please provide valid email (eg. john@gmail.com) </div>
+					    </div>
+					</div>
+
+
+					<div class="form-group row">
+					    <label  class="col-sm-4 col-form-label">Report Frequency</label>
+					    <div class="col-sm-11">
+						    <select class="custom-select" name="ureportfrequency">
+								  <option selected>Select Status</option>
+								  <option value="1">Weekly</option>
+								  <option value="2">Twice in a Month</option>
+								  <option value="3">Monthly</option>
+							</select>
+					    </div>
+					</div>
+
+					<div class="form-group row">
+					    <label class="col-sm-3 col-form-label">Password </label>
+					    <div class="col-sm-11">
+					      <input type="password" placeholder="********" class="form-control" minlength="6" name="upassword" required>
+					      <p>
+					      <div class="valid-feedback">Looks good!</div>
+					    </div>
+					</div>
+				</div>
+
+				<div class="col-md-6">
+
+					<div class="form-group row">
+					    <label class="col-sm-4 col-form-label">Company Email</label>
+					    <div class="col-sm-11">
+					      <input type="email" class="form-control" id="inputEmail3" placeholder="Working Email" name="uemail" required="">
+					      <div class="invalid-feedback">please provide valid email (eg. john@gmail.com) </div>
+					    </div>
+					</div>
+
+
+					<div class="form-group row">
+					    <label  class="col-sm-5 col-form-label">Supervisor Full Name</label>
+					    <div class="col-sm-11">
+					      <input class="form-control" id="inputEmail3" placeholder="Supervisor Name" name="usname" required>
+					    </div>
+					</div>
+
+					<div class="form-group row">
+					    <label class="col-sm-6 col-form-label">Purpose of Choosing our tool</label>
+					    <div class="col-sm-11">
+						    <select class="custom-select" name="utoolusage">
+								<option selected>Select Status</option>
+								<option value="1">Digital Marketing</option>
+								<option value="2">Tracking Customer Behaviour</option>
+								<option value="3">Brand Marketing</option>
+								<option value="4">Image Analysis</option>
+							</select>
+					    </div>
+					</div>
+
+					<div class="form-group row">
+					    <label class="col-sm-5 col-form-label">Report Start Date </label>
+					    <div class="col-sm-11">
+					      <input type="Date" class="form-control" id="pass" minlength="6" name="ustartdate" required>
+					    </div>
+					</div>
+
+					<div class="form-group row">
+					    <label class="col-sm-5 col-form-label">Enter Password Again</label>
+					    <div class="col-sm-11">
+					      	<input type="password" class="form-control" minlength="6" placeholder="********" name="urpassword" required>
+					     	<p>
+						<div class="valid-feedback">Looks good!</div>
+					    </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row p-4 bg-light">
+				<div class="col d-flex justify-content-end">
+					<input type="submit" class="btn btn-primary mr-2 " value="Register">
+					<input class="btn btn-primary" type="cancel" value="Cancel">
+				</div>
+			</div>
+
+		</form>
+
+		<!-- form end------------------------- -->
+	</div>
+
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<!-- JavaScript for disabling form submissions if there are invalid fields -->
+    <script>
+	(function() {
+		'use strict';
+	  	window.addEventListener('load', function() {
+	    	// Fetch all the forms we want to apply custom Bootstrap validation styles to
+	    	var forms = document.getElementsByClassName('needs-validation');
+	    	// Loop over them and prevent submission
+	    	var validation = Array.prototype.filter.call(forms, function(form) {
+	      	form.addEventListener('submit', function(event) {
+	        	if (form.checkValidity() === false) {
+	         		event.preventDefault();
+	          		event.stopPropagation();
+	        	}
+	        	form.classList.add('was-validated');
+	    	}, false);
+	    });
+	  	}, false);
+	})();
+	</script>
+{% endblock %}

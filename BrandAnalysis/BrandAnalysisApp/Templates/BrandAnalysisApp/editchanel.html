@@ -7,23 +7,24 @@
 {% endblock %}
 {% block title %} Report| Stalk Market | Image analysis for Brand Marketing {% endblock %}
 {% block content %}
-{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
     <div class="header">
         <img class="imgheader" src="{% static 'assets/logo.png' %}">
     </div>
 	<br/>
+	{% if error %}<h3><strong>{{ error }}</strong></h3><br/>{% endif %}
 	<div class="container" >
 		<div class="row pt-4 pl-3 bg-light header" >
 			<h2>Edit Chanel</h2>
 		</div>
 		<!-- form -->
-		<form class="needs-validation" novalidate>
+		<form class="needs-validation" novalidate method="post">
+			{% csrf_token %}
 		<div class="row  bg-light" >
 			<div class="col-md-6">
 				<div class="form-group row">
-					<label class="col-sm-2 col-form-label" id="validationCustom01" value="Mark" required>Name</label>
+					<label class="col-sm-4 col-form-label" id="validationCustom01" value="Mark" required>Company Name</label>
 					<div class="col-sm-11">
-						<input type="Name" class="form-control" id="inputEmail3" placeholder="Full Name" required>
+						<input type="Name" name="uname" class="form-control" id="inputEmail3" placeholder="Full Name" value="{{ user.uname }}" required>
 						<div class="valid-feedback">Looks good!</div>
 					</div>
 				</div>
@@ -31,14 +32,14 @@
 				<div class="form-group row">
 				    <label class="col-sm-3 col-form-label">Start Date</label>
 				    <div class="col-sm-11">
-				      <input type="Date" class="form-control" id="inputEmail3">
+				      <input type="Date" class="form-control" id="inputEmail3" value="{{ user.ustartdate |date:'Y-m-d' }}" readonly>
 				    </div>
 				</div>
 
 				<div class="form-group row">
-				    <label class="col-sm-2 col-form-label">Email</label>
+				    <label class="col-sm-4 col-form-label">Supervisor Email</label>
 				    <div class="col-sm-11">
-						<input type="email" class="form-control" id="inputEmail3" placeholder="Email" required="">
+						<input type="email" name="usemail" class="form-control" id="inputEmail3" placeholder="Supervisor Email" value="{{ user.usemail }}" required="">
 						<div class="invalid-feedback">plese provide valid email (eg. john@gmail.com) </div>
 				    </div>
 				</div>
@@ -46,7 +47,7 @@
 				<div class="form-group row">
 				    <label  class="col-sm-2 col-form-label">Supervisor</label>
 				    <div class="col-sm-11">
-						<input class="form-control" id="inputEmail3" placeholder="Supervisor Name" required="">
+						<input class="form-control" name="usname" id="inputEmail3" placeholder="Supervisor Name" value="{{ user.usname }}" required="">
 				    </div>
 				</div>
 			</div>
@@ -54,20 +55,19 @@
 			<div class="col-md-6">
 				
 				<div class="form-group row">
-				    <label class="col-sm-4 col-form-label">Stalk Market ID :</label>
+				    <label class="col-sm-4 col-form-label">Stalk Market ID</label>
 				    <div class="col-sm-11">
-						<input type="ID" class="form-control" id="inputEmail3" placeholder="Stalk Market ID">
+						<input type="ID" class="form-control" id="inputEmail3" placeholder="Stalk Market ID" value="SM - {{ user.id }}" readonly>
 				    </div>
 				</div>
 					
 				<div class="form-group row">
 					<label class="col-sm-3 col-form-label">Status</label>
 				    <div class="col-sm-11">
-					    <select class="custom-select">
+					    <select class="custom-select" name="uactivated">
 							  <option selected>Select Status</option>
-							  <option value="1">Active</option>
-							  <option value="2">Inactive</option>
-							  <option value="3">Suspend</option>
+							  <option value="True" {% if user.uactivated == True %}selected="selected"{% endif %}>Active</option>
+							  <option value="False" {% if user.uactivated == False %}selected="selected"{% endif %}>Inactive</option>
 						</select>
 				    </div>
 				</div>
@@ -75,19 +75,19 @@
 				<div class="form-group row">
 				    <label class="col-sm-2 col-form-label mask">Phone</label>
 				    <div class="col-sm-11">
-						<input type="tel" class="form-control" id="inputEmail3" pattern="[+][0-9]{1,3}[0-9]{10}" placeholder="+9770000000000" required="">
-						<div class="invalid-feedback">plese provide valid phone number (eg. +9770000000000 ) </div>
+						<input type="tel" name="unumber" class="form-control" id="inputEmail3" pattern="[+][0-9]{1,3}[0-9]{10}" placeholder="+9770000000000" value="{{ user.unumber }}" required="">
+						<div class="invalid-feedback">please provide valid phone number (eg. +9770000000000 ) </div>
 				    </div>
 				</div>
 
 				<div class="form-group row">
 				    <label  class="col-sm-4 col-form-label">Report Frequency</label>
 				    <div class="col-sm-11">
-					    <select class="custom-select">
+					    <select class="custom-select" name="ureportfrequency">
 							  <option selected>Select Status</option>
-							  <option value="1">Weekly</option>
-							  <option value="2">Twice in a Month</option>
-							  <option value="3">Monthly</option>
+							  <option value="1" {% if user.ureportfrequency == '1' %}selected="selected"{% endif %}>Weekly</option>
+							  <option value="2" {% if user.ureportfrequency == '2' %}selected="selected"{% endif %}>Twice in a Month</option>
+							  <option value="3" {% if user.ureportfrequency == '3' %}selected="selected"{% endif %}>Monthly</option>
 						</select>
 				    </div>
 				</div>
@@ -97,7 +97,7 @@
 		<div class="row p-4 bg-light">
 			<div class="col d-flex justify-content-end">
 				<input type="submit" class="btn btn-primary mr-2 " type="submit" value="Submit">
-				<input class="btn btn-primary" type="reset" value="Reset">
+				<input type="reset" class="btn btn-primary" value="Reset" onclick="location.reload()">
 			</div>
 		</div>
 		</form>

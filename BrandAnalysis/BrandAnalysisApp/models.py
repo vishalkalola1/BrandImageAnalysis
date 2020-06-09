@@ -7,6 +7,12 @@ import uuid
 class UserCustom(models.Model):
     id = models.AutoField(primary_key=True)
     uname = models.CharField(max_length=100)
+    unumber = models.CharField(max_length=15)
+    usemail = models.CharField(max_length=100)
+    ureportfrequency = models.CharField(max_length=50)
+    usname = models.CharField(max_length=100)
+    utoolusage = models.CharField(max_length=100)
+    ustartdate = models.DateField()
     uemail = models.EmailField()
     upassword = models.CharField(max_length=50)
     utype = models.CharField(max_length=10,default="user")
@@ -19,9 +25,9 @@ class UserCustom(models.Model):
 
 class uploadFile(models.Model):
     file = models.ImageField()
+
     class Meta:
         db_table = "uploadFile"
-
 
 class UploadFileAnnotations(models.Model):
     id = models.AutoField(primary_key=True)
@@ -55,7 +61,7 @@ class ImagePropertiesAnnotation(models.Model):
     red = models.CharField(max_length=6)
     green = models.CharField(max_length=6)
     blue = models.CharField(max_length=6)
-    pixelFraction = models.CharField(max_length=20)
+    pixelFraction = models.CharField(max_length=200)
     alpha = models.CharField(max_length=20)
     imageid = models.ForeignKey(UploadFileAnnotations, on_delete=models.CASCADE)
     userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
@@ -67,7 +73,7 @@ class ImagePropertiesAnnotation(models.Model):
 
 class FullTextAnnotation(models.Model):
     id = models.AutoField(primary_key=True)
-    text = models.CharField(max_length=100)
+    text = models.CharField(max_length=1000)
     imageid = models.ForeignKey(UploadFileAnnotations, on_delete=models.CASCADE)
     userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
     createdon = models.DateTimeField(default=timezone.now)
@@ -90,7 +96,7 @@ class LanguageAnnotations(models.Model):
 
 class LabelAnnotations(models.Model):
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
     imageid = models.ForeignKey(UploadFileAnnotations, on_delete=models.CASCADE)
     userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
     createdon = models.DateTimeField(default=timezone.now)
@@ -101,7 +107,7 @@ class LabelAnnotations(models.Model):
 
 class LandmarkAnnotations(models.Model):
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
     imageid = models.ForeignKey(UploadFileAnnotations, on_delete=models.CASCADE)
     userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
     createdon = models.DateTimeField(default=timezone.now)
@@ -151,7 +157,7 @@ class SafeSearchAnnotation(models.Model):
 
 class TextAnnotations(models.Model):
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
     locale = models.CharField(max_length=5)
     imageid = models.ForeignKey(UploadFileAnnotations, on_delete=models.CASCADE)
     userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
@@ -163,7 +169,7 @@ class TextAnnotations(models.Model):
 
 class LogoAnnotations(models.Model):
     id = models.AutoField(primary_key=True)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
     imageid = models.ForeignKey(UploadFileAnnotations, on_delete=models.CASCADE)
     userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
     createdon = models.DateTimeField(default=timezone.now)
@@ -171,6 +177,15 @@ class LogoAnnotations(models.Model):
 
     class Meta:
         db_table = "LogoAnnotations"
+
+class ReportTable(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=1000)
+    userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
+    createdon = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = "ReportTable"
 
 
 
