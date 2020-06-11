@@ -21,4 +21,15 @@ class EditUserForm(forms.ModelForm):
         model = UserCustom
         fields = ['uname','unumber','usemail','ureportfrequency','usname','uactivated']
 
+class EditClientForm(forms.ModelForm):
+    class Meta:
+        model = UserCustom
+        fields = ['unumber','usemail','ureportfrequency','usname']
+
+
+class ChangePassword(forms.Form):
+    old_password = forms.CharField(max_length=50)
+    new_password = forms.CharField(max_length=50)
+    reenter_password = forms.CharField(max_length=50)
+
 

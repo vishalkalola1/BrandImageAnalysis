@@ -2,7 +2,7 @@ import io
 import os
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from .forms import LoginForm, RegisterForm, UploadFileForm, EditUserForm
+from .forms import LoginForm, RegisterForm, UploadFileForm, EditUserForm, EditClientForm, ChangePassword
 from .models import UserCustom,UploadFileAnnotations, LogoAnnotations, LabelAnnotations, FaceAnnotations, ImagePropertiesAnnotation, FullTextAnnotation, LandmarkAnnotations, LocationAnnotations, LocalizedObjectAnnotations, SafeSearchAnnotation, TextAnnotations, LanguageAnnotations, ReportTable
 from django.urls import reverse
 from django.contrib.auth.models import User,auth
@@ -15,7 +15,7 @@ from django.core.mail import EmailMessage
 from django.utils import timezone
 from google.cloud import vision
 from google.cloud.vision import types
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.contrib.sessions.models import Session
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
@@ -36,7 +36,7 @@ def login(request):
             if userttype.lower() == "admin":
                 return redirect("adminHome")
             else:
-                return redirect("uploadImage")
+                return redirect("dashboard")
 
     if request.method == "POST":
         username = request.POST['uemail']
@@ -53,7 +53,7 @@ def login(request):
                     if user.utype.lower() == "admin":
                         return redirect("adminHome")
                     else:
-                        return redirect("uploadImage")
+                        return redirect("dashboard")
                 else:
                     context["error"] = "User is not Activated"
                     return render(request, 'BrandAnalysisApp/SignIn.html', context)
@@ -89,6 +89,8 @@ def register(request):
                     'domain': current_site.domain,
                     'id': user.id,
                     'token': account_activation_token.make_token(user),
+                    'msg': "Please click on the link to confirm your email id and activate your account.",
+                    'urlcustom': "activate"
                 })
                 to_email = registerform.cleaned_data.get('uemail')
                 email = EmailMessage(
@@ -300,23 +302,47 @@ def forgotpassword(request):
         username = request.POST['uemail']
         user = UserCustom.objects.get(uemail=username)
         current_site = get_current_site(request)
-        mail_subject = 'verify your email id.'
+        mail_subject = 'Reset your password'
         message = render_to_string('BrandAnalysisApp/acc_active_email.html', {
             'user': user,
             'domain': current_site.domain,
             'id': user.id,
             'token': account_activation_token.make_token(user),
+            'msg': "Please click on the link to reset password.",
+            'urlcustom': "reset"
         })
         email = EmailMessage(
             mail_subject, message, to=[username]
         )
         email.send()
-        context["error"] = 'Please confirm your email address to complete the registration'
-        return render(request, 'BrandAnalysisApp/clientregistration.html', context)
-
+        context["error"] = 'We sent link on register email id for reset your password.'
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
     else:
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
+
+def reset(request,id,token):
+    context = {}
+    if request.POST == "POST":
+        try:
+            user = UserCustom.objects.get(id=id)
+            if user is not None and account_activation_token.check_token(user, token):
+                return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+            else:
+                return HttpResponse('Activation link is invalid!')
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+            return HttpResponse('Activation link is invalid!')
+    else:
+        return render(request,'BrandAnalysisApp/homeadmin.html',context)
+
+def report(request,id):
+    context = {}
+    user = UserCustom.objects.get(id=id)
+    if request.POST == "POST":
+        pass
+    else:
+        context["user"] = user
+        return render(request, 'BrandAnalysisApp/report.html', context)
 
 def adminHome(request):
     context = {}
@@ -384,10 +410,12 @@ def viewcompany(request,id):
         context["noreport"] = len(ReportTable.objects.filter(userid=id))
         return render(request, 'BrandAnalysisApp/clientdetail.html', context)
 
-def delete(request,id):
+def delete(request,id): # Todo
     context = {}
-    return render(request, 'BrandAnalysisApp/clientdetail.html', context)
-    # context["alert"] = "Are you sure you want to delete?"
+    # instance = UserCustom.objects.get(id=id)
+    # instance.delete()
+    context["error"] = "Record deleted sucessfully."
+    return HttpResponseRedirect("/adminHome")
 
 def logout(request):
     try:
@@ -396,3 +424,52 @@ def logout(request):
         pass
     return redirect('home')
 
+#########################################################################################
+
+def dashboard(request):
+    context = {}
+    user = UserCustom.objects.get(id=request.session.get("userid"))
+    context["user"] = user
+    if request.method == "POST":
+        return render(request, 'BrandAnalysisApp/dashboard.html', context)
+    else:
+        return render(request, 'BrandAnalysisApp/dashboard.html', context)
+
+def changeProfile(request):
+    context = {}
+    user = UserCustom.objects.get(id=request.session.get("userid"))
+    context["user"] = user
+    if request.method == "POST":
+        editform = EditClientForm(request.POST)
+        if editform.is_valid():
+            user.usname = editform.instance.usname
+            user.unumber = editform.instance.unumber
+            user.usemail = editform.instance.usemail
+            user.ureportfrequency = editform.instance.ureportfrequency
+            user.save()
+        return render(request, 'BrandAnalysisApp/editcompanyprofile.html', context)
+    else:
+        return render(request, 'BrandAnalysisApp/editcompanyprofile.html', context)
+
+def changePassword(request):
+    context = {}
+    user = UserCustom.objects.get(id=request.session.get("userid"))
+    context["user"] = user
+    if request.method == "POST":
+        opwd = request.POST["opwd"]
+        newpwd = request.POST["newpwd"]
+        confirmpwd = request.POST["confirmpwd"]
+        if user.upassword != opwd:
+            context["error"] = "Old Password does not matched"
+            return render(request, 'BrandAnalysisApp/changepassword.html', context)
+        elif newpwd != confirmpwd:
+            context["error"] = "New password does not matched"
+            return render(request, 'BrandAnalysisApp/changepassword.html', context)
+        else:
+            user.upassword = newpwd
+            user.save()
+            context["error"] = "Password updated Successfully"
+            return render(request, 'BrandAnalysisApp/changepassword.html', context)
+    else:
+        context["error"] = ""
+        return render(request, 'BrandAnalysisApp/changepassword.html', context)

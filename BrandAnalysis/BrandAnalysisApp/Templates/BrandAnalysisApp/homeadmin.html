@@ -22,52 +22,61 @@
             {% for question in questions %}
                 <tr style="padding:10px;">
                     {% for questiontemp in question %}
-                            <td style="width: 350px; !important; height: 270px; !important;padding:10px;">
-                                <div class="card" style="background-color:white;width: 340px; height: 260px;overflow: hidden;">
-                                    <div class="titlediv">
-                                        <div style="margin-top:18px;">
-                                            <label style="color: white;font-size: 19px;">{{ questiontemp.user.uname }}</label>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div style="font-size:0;">
-                                            <div style="width:50%; display:inline-table;align: left;">
-                                                <label style="color: grey;font-size: 15px;text-align: left;width:100%;margin:0;"> SM - {{ questiontemp.user.id}} </label>
-                                            </div>
-                                            <div style="width:50%; display:inline-table;margin-top:5px;">
-                                                {% if questiontemp.user.uactivated == 1 %}
-                                                    <label style="color: green;font-size: 15px;width:100%;"> Active </label>
-                                                {% else %}
-                                                    <label style="color: red;font-size: 15px;width:100%;"> InActive </label>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div style="margin-bottom:15px;margin-top:15px;">
-                                        <div style="margin-top:10px;">
-                                            <label style="color: black;font-size: 15px;"> Added On: {{ questiontemp.user.updatedon }}</label>
-                                        </div>
-                                        <div style="margin-top:10px;">
-                                            <label style="color: black;font-size: 15px;"> Last Report: {{ questiontemp.reports.createdon }}</label>
-                                        </div>
-                                    </div>
-                                    <div class="div">
-                                        <button class="buttonview" onclick="location.href='{% url 'viewcompany' questiontemp.user.id %}'">View</button>
-                                        <button class="buttonedit" onclick="location.href='{% url 'editcompany' questiontemp.user.id %}'">Edit</button>
-                                        <button class="buttondelete" onclick="location.href='{% url 'deletecompany' questiontemp.user.id %}'">Delete</button>
-                                    </div>
-                                    <div>
-                                        <button class="buttonupload" onclick="location.href='{% url 'uploadImage' questiontemp.user.id %}'">Upload</button>
+                        <td style="width: 350px; !important; height: 270px; !important;padding:10px;">
+                            <div class="card" style="background-color:white;width: 340px; height: 260px;overflow: hidden;">
+                                <div class="titlediv">
+                                    <div style="margin-top:18px;">
+                                        <label style="color: white;font-size: 19px;">{{ questiontemp.user.uname }}</label>
                                     </div>
                                 </div>
-                            </td>
+                                <div>
+                                    <div style="font-size:0;">
+                                        <div style="width:50%; display:inline-table;align: left;">
+                                            <label style="color: grey;font-size: 15px;text-align: left;width:100%;margin:0;"> SM - {{ questiontemp.user.id}} </label>
+                                        </div>
+                                        <div style="width:50%; display:inline-table;margin-top:5px;">
+                                            {% if questiontemp.user.uactivated == 1 %}
+                                            <label style="color: green;font-size: 15px;width:100%;"> Active </label>
+                                            {% else %}
+                                            <label style="color: red;font-size: 15px;width:100%;"> InActive </label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom:15px;margin-top:15px;">
+                                    <div style="margin-top:10px;">
+                                        <label style="color: black;font-size: 15px;"> Added On: {{ questiontemp.user.updatedon }}</label>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <label style="color: black;font-size: 15px;"> Last Report: {{ questiontemp.reports.createdon }}</label>
+                                    </div>
+                                </div>
+                                <div class="div">
+                                    <button class="buttonview" onclick="location.href='{% url 'viewcompany' questiontemp.user.id %}'">View</button>
+                                    <button class="buttonedit" onclick="location.href='{% url 'editcompany' questiontemp.user.id %}'">Edit</button>
+                                    <form class="buttondeleteform" id='person-delete' method="POST">
+                                        {% csrf_token %}
+                                        <button class="buttondelete" formaction="{% url 'deletecompany' questiontemp.user.id %}" onclick="deleteFunction();">Delete</button>
+                                    </form>
+                                </div>
+                                <div>
+                                    <button class="buttonupload" onclick="location.href='{% url 'uploadImage' questiontemp.user.id %}'">Upload</button>
+                                </div>
+                            </div>
+                        </td>
                     {% endfor %}
                 </tr>
            {% endfor %}
         </table>
     </div>
 
-<!--    <script>-->
-<!--        alert("{{ alert }}")-->
-<!--    </script>-->
+    <script>
+        function deleteFunction(e) {
+            if(!confirm("Are you sure you want to delete?")){
+                e.preventDefault();
+            }else{
+                $('#person-delete').submit();
+            }
+        }
+    </script>
 {% endblock %}

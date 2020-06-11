@@ -61,7 +61,7 @@
 				  	<div class="form-group row border-bottom" style="border-color: #ccc">
 				    	<label  class="col-sm-3 col-form-label">Latest Report</label>
 					    <div class=" col-sm-9">
-							<img src="images/pdf-icon.png" height="auto" width="50" alt="View your Latest Report" title="View your Latest Report" data-toggle="modal" data-target=".bd-example-modal-lg"> 
+							<img src="{% static 'assets/pdf-icon.png' %}" height="auto" width="50" alt="View your Latest Report" title="View your Latest Report" data-toggle="modal" data-target=".bd-example-modal-lg">
 
 							<!-- Large modal -->
 
@@ -134,7 +134,7 @@
 		<!-- View all report botton -------------.--------------------------------------------------------- -->
 		<div class="row pb-4 bg-light ">
 		    <div class=" col-sm-12 d-flex justify-content-end ">
-				<a href="report.html" class="btn btn-primary text-white"  type="reset" value="View All Report">View All Report</a>
+				<a href="{% url 'report' user.id %}" class="btn btn-primary text-white"  type="reset" value="View All Report">View All Report</a>
 				<!-- Large modal -->								
 			</div>
 	  	</div>

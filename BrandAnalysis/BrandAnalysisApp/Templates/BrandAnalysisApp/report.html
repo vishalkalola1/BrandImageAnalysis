@@ -1,0 +1,101 @@
+{% extends "BrandAnalysisApp/Base.html" %}
+{% load static %}
+{% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+{% endblock %}
+{% block title %} Report| Stalk Market | Image analysis for Brand Marketing {% endblock %}
+{% block content %}
+{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+	<br/>
+	<div class="container bg-light">
+		<!-- Header---------------------------------------- -->
+		<div class="row p-2 pl-3 bg-light header border-left border-info"> 
+			<h2>Chanel Reports</h2>
+		</div>
+
+		<!-- ID and Display option-------------------------	 -->
+		<div class="row ">
+			<div class="col-6">
+				<div class="form-group row ">
+				    <label class="col-sm-3 col-form-label rounded-left" required>Stalk Maket ID:</label>
+				    <div class="col-sm-9" allignment="auto">
+				        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="SM - {{ user.id }}">
+				    </div>
+				</div>
+			</div>
+
+<!--			<div class="col-6">-->
+<!--			-->
+<!--				<div class="form-group row">-->
+<!--			    <label  class="col-sm-4 col-form-label">View by Frequency</label>-->
+<!--			    <div class="col-sm-6">-->
+<!--				    <select class="custom-select">-->
+<!--						  <option selected>Select Month</option>-->
+<!--						  <option value="1">Jan</option>-->
+<!--						  <option value="2">Feb</option>-->
+<!--						  <option value="3">March</option>-->
+<!--					</select>-->
+<!--			    </div>-->
+<!--			  	</div>	-->
+<!--			</div>-->
+		</div>
+		<hr style="width:100%; text-align:left; margin-left:0">
+
+		<!-- PDFs'-------------------------	 -->
+		<div class="row ">
+			<div class="col card-deck">
+
+				<!-- Card starts -->
+			  	<div class="card text-center">
+				  <div class="card-body">
+				  	<img class="" src="{% static 'assets/pdf-icon.png' %}" alt="Card image cap" width="50">
+				    <h5 class="card-title">Jan 2020</h5>
+				    <a href="#" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">View</a>
+				  </div>
+				</div>
+				<!-- Card ends -->
+
+				<!--PDF MODAL Starts-------------------------------------------- -->
+				<div class="modal fade bd-example-modal-lg border-bottom" style="border-color: #ccc" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+					    <div class="modal-content">
+					    	<div class="modal-header">
+					    		  <h5 class="modal-title">Report For Jan</h5> <!-- Report Title-->
+							    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							        <span aria-hidden="true">&times;</span>
+							    </button>
+							 </div>	
+							 <div class="modal-body">
+						      	<iframe src="https://web.stanford.edu/class/ee368/Project_06/Project/ee368_reports/ee368group26.pdf" width="100%" height="500px">
+	    						</iframe>
+	    					</div>
+					    </div>
+					</div>
+				</div>			
+				<!--PDF MODAL Ends---------------------------------------------->
+			</div> <!-- card deck  ends -->
+		 </div> <!-- row ends -->
+		
+
+		<hr style="width:100%; text-align:left; margin-left:0">
+
+<!--		&lt;!&ndash; Back botton-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; &ndash;&gt;-->
+<!--		<div class="row p-4">-->
+<!--			<div class=" col-sm-12 d-flex justify-content-center ">-->
+<!--				<a href="{% url 'report' user.id %" class="btn btn-primary text-white"  type="reset" value="View All Report">Back</a>-->
+<!--			</div>-->
+<!--		</div>-->
+	</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+{% endblock %}

@@ -8,9 +8,18 @@ urlpatterns = [
     path('contactus',views.contactus,name='contactus'),
     path('forgotpassword',views.forgotpassword,name='forgotpassword'),
     path('activate/<int:id>/<str:token>', views.activate, name='activate'),
+    path('reset/<int:id>/<str:token>', views.reset, name='reset'),
     path('adminHome', views.adminHome,name='adminHome'),
     path('editcompany/<int:id>', views.editcompany,name='editcompany'),
     path('viewcompany/<int:id>', views.viewcompany,name='viewcompany'),
     path('deletecompany/<int:id>', views.delete,name='deletecompany'),
+    path('report/<int:id>',views.report, name='report'),
+    ###############################################################
+    path('dashboard',views.dashboard, name='dashboard'),
+    path('changeProfile',views.changeProfile, name='changeProfile'),
+    path('changePassword',views.changePassword, name='changePassword'),
+    # path('changeProfile/<int:id>',views.changeProfile, name='changeProfile'),
+
+    ###############################################################
     path('logout', views.logout,name='logout')
 ]
