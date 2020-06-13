@@ -72,8 +72,8 @@ WSGI_APPLICATION = 'BrandAnalysis.wsgi.application'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'vishalkalola196@gmail.com'
-EMAIL_HOST_PASSWORD = 'VishalK@125'
+EMAIL_HOST_USER = 'noreply.stalkmarket@gmail.com'
+EMAIL_HOST_PASSWORD = 'Email3@sm2020'
 EMAIL_PORT = 587
 
 # Database

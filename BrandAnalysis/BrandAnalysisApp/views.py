@@ -82,22 +82,9 @@ def register(request):
                 user = registerform.save(commit=False)
                 user.uactivated = False
                 registerform.save()
-                current_site = get_current_site(request)
-                mail_subject = 'verify your email id.'
-                message = render_to_string('BrandAnalysisApp/acc_active_email.html', {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'id': user.id,
-                    'token': account_activation_token.make_token(user),
-                    'msg': "Please click on the link to confirm your email id and activate your account.",
-                    'urlcustom': "activate"
-                })
-                to_email = registerform.cleaned_data.get('uemail')
-                email = EmailMessage(
-                    mail_subject, message, to=[to_email]
-                )
-                email.send()
-                context["error"] = 'Please confirm your email address to complete the registration'
+                sendEmail(request, user, "Please click on the link below to verify your email for sign-in to Stalk Market.", "activate",
+                          "Verify your email")
+                context["error"] = 'Please confirm your email address to complete and activate the account'
                 return render(request, 'BrandAnalysisApp/clientregistration.html', context)
         else:
             context["error"] = "Email already register."
@@ -109,6 +96,9 @@ def register(request):
 
 def uploadImage(request,id):
     context = {}
+    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+        return redirect('home')
+
     user = UserCustom.objects.get(id=id)
     if request.method == "POST":
         imageForms = UploadFileForm(request.POST, request.FILES)
@@ -301,24 +291,29 @@ def forgotpassword(request):
     if request.method == "POST":
         username = request.POST['uemail']
         user = UserCustom.objects.get(uemail=username)
-        current_site = get_current_site(request)
-        mail_subject = 'Reset your password'
-        message = render_to_string('BrandAnalysisApp/acc_active_email.html', {
-            'user': user,
-            'domain': current_site.domain,
-            'id': user.id,
-            'token': account_activation_token.make_token(user),
-            'msg': "Please click on the link to reset password.",
-            'urlcustom': "reset"
-        })
-        email = EmailMessage(
-            mail_subject, message, to=[username]
-        )
-        email.send()
+        sendEmail(request,user,"Please click the link below to reset your password.","reset","Link for password reset")
         context["error"] = 'We sent link on register email id for reset your password.'
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
     else:
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
+
+
+def sendEmail(request,user,msg,url,mailsubject):
+    current_site = get_current_site(request)
+    mail_subject = mailsubject
+    message = render_to_string('BrandAnalysisApp/acc_active_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'id': user.id,
+        'token': account_activation_token.make_token(user),
+        'msg': msg,
+        'urlcustom':url
+    })
+    email = EmailMessage(
+        mail_subject, message, to=[user.uemail]
+    )
+    email.send()
+
 
 def reset(request,id,token):
     context = {}
@@ -346,6 +341,10 @@ def report(request,id):
 
 def adminHome(request):
     context = {}
+
+    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+        return redirect('home')
+
     if request.method == "POST":
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/homeadmin.html', context)
@@ -371,6 +370,10 @@ def adminHome(request):
 
 def editcompany(request,id):
     context = {}
+
+    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+        return redirect('home')
+
     user = UserCustom.objects.get(id=id)
     count = len(ReportTable.objects.filter(userid=id))
     if request.method == "POST":
@@ -401,6 +404,10 @@ def editcompany(request,id):
 
 def viewcompany(request,id):
     context = {}
+
+    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+        return redirect('home')
+
     if request.method == "POST":
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/clientdetail.html', context)
@@ -412,6 +419,10 @@ def viewcompany(request,id):
 
 def delete(request,id): # Todo
     context = {}
+
+    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+        return redirect('home')
+
     # instance = UserCustom.objects.get(id=id)
     # instance.delete()
     context["error"] = "Record deleted sucessfully."
@@ -428,6 +439,10 @@ def logout(request):
 
 def dashboard(request):
     context = {}
+
+    if (request.session.get('userid') is None):
+        return redirect('home')
+
     user = UserCustom.objects.get(id=request.session.get("userid"))
     context["user"] = user
     if request.method == "POST":
@@ -437,6 +452,9 @@ def dashboard(request):
 
 def changeProfile(request):
     context = {}
+    if (request.session.get('userid') is None):
+        return redirect('home')
+
     user = UserCustom.objects.get(id=request.session.get("userid"))
     context["user"] = user
     if request.method == "POST":
@@ -447,12 +465,17 @@ def changeProfile(request):
             user.usemail = editform.instance.usemail
             user.ureportfrequency = editform.instance.ureportfrequency
             user.save()
+            context["error"] = "Profile updated successfully"
         return render(request, 'BrandAnalysisApp/editcompanyprofile.html', context)
     else:
         return render(request, 'BrandAnalysisApp/editcompanyprofile.html', context)
 
 def changePassword(request):
     context = {}
+
+    if (request.session.get('userid') is None):
+        return redirect('home')
+
     user = UserCustom.objects.get(id=request.session.get("userid"))
     context["user"] = user
     if request.method == "POST":
@@ -473,3 +496,15 @@ def changePassword(request):
     else:
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/changepassword.html', context)
+
+def help(request):
+    context = {}
+    if (request.session.get('userid') is None):
+        return redirect('home')
+
+    user = UserCustom.objects.get(id=request.session.get("userid"))
+    context["user"] = user
+    if request.method == "POST":
+        return render(request, 'BrandAnalysisApp/help.html', context)
+    else:
+        return render(request, 'BrandAnalysisApp/help.html', context)

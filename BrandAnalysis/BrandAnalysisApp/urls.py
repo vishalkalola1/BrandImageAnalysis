@@ -18,7 +18,7 @@ urlpatterns = [
     path('dashboard',views.dashboard, name='dashboard'),
     path('changeProfile',views.changeProfile, name='changeProfile'),
     path('changePassword',views.changePassword, name='changePassword'),
-    # path('changeProfile/<int:id>',views.changeProfile, name='changeProfile'),
+    path('help',views.help, name='help'),
 
     ###############################################################
     path('logout', views.logout,name='logout')
