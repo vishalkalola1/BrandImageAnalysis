@@ -2,8 +2,8 @@ import io
 import os
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from .forms import LoginForm, RegisterForm, UploadFileForm, EditUserForm, EditClientForm, ChangePassword
-from .models import UserCustom,UploadFileAnnotations, LogoAnnotations, LabelAnnotations, FaceAnnotations, ImagePropertiesAnnotation, FullTextAnnotation, LandmarkAnnotations, LocationAnnotations, LocalizedObjectAnnotations, SafeSearchAnnotation, TextAnnotations, LanguageAnnotations, ReportTable
+from .forms import LoginForm, RegisterForm, UploadFileForm, EditUserForm, EditClientForm, ChangePassword, HelpPage
+from .models import UserCustom,UploadFileAnnotations, LogoAnnotations, LabelAnnotations, FaceAnnotations, ImagePropertiesAnnotation, FullTextAnnotation, LandmarkAnnotations, LocationAnnotations, LocalizedObjectAnnotations, SafeSearchAnnotation, TextAnnotations, LanguageAnnotations, ReportTable, HelpTable
 from django.urls import reverse
 from django.contrib.auth.models import User,auth
 from django.contrib.sites.shortcuts import get_current_site
@@ -16,6 +16,7 @@ from django.utils import timezone
 from google.cloud import vision
 from google.cloud.vision import types
 from django.shortcuts import redirect, render
+from django.contrib import messages
 from django.contrib.sessions.models import Session
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
@@ -55,14 +56,13 @@ def login(request):
                     else:
                         return redirect("dashboard")
                 else:
-                    context["error"] = "User is not Activated"
-                    return render(request, 'BrandAnalysisApp/SignIn.html', context)
+                    messages.success(request,"User is not Activated")
             else:
-                context["error"] = "User is not authenticated"
-                return render(request, 'BrandAnalysisApp/SignIn.html', context)
+                messages.success(request, "User is not authenticated")
+            return redirect('login')
         except:
-            context["error"] = "User is not register with this email id"
-            return render(request, 'BrandAnalysisApp/SignIn.html', context)
+            messages.success(request, "User is not register with this email id")
+            return redirect('login')
     else:
         userform = LoginForm()
         context["form"] = userform
@@ -76,19 +76,18 @@ def register(request):
             username = request.POST['uemail']
             try:
                 user = UserCustom.objects.get(uemail=username)
-                context["error"] = "Email already register."
-                return render(request, 'BrandAnalysisApp/clientregistration.html', context)
+                messages.success(request, "Email already register.")
+                return redirect('register')
             except:
                 user = registerform.save(commit=False)
                 user.uactivated = False
                 registerform.save()
-                sendEmail(request, user, "Please click on the link below to verify your email for sign-in to Stalk Market.", "activate",
-                          "Verify your email")
-                context["error"] = 'Please confirm your email address to complete and activate the account'
-                return render(request, 'BrandAnalysisApp/clientregistration.html', context)
+                sendEmail(request, user, "Please click on the link below to verify your email for sign-in to Stalk Market.", "activate", "Verify your email")
+                messages.success(request, "Please confirm your email address to complete and activate the account")
+                return redirect('register')
         else:
-            context["error"] = "Email already register."
-            return render(request,'BrandAnalysisApp/clientregistration.html',context)
+            messages.success(request, "Email already register.")
+            return redirect('register')
     else:
         userform = RegisterForm()
         context["form"] = userform
@@ -107,10 +106,10 @@ def uploadImage(request,id):
             for i in range(len(files)):
                 file = files[i]
                 handle_uploaded_file(file, file.name, user)
-            context["error"] = "Image uploaded successfully"
+            messages.success(request, "Image uploaded successfully")
         else:
-            context["error"] = "File not uploaded try again later"
-        return render(request, 'BrandAnalysisApp/UploadImage.html',context)
+            messages.success(request, "File not uploaded try again later")
+        return redirect('uploadImage', id)
     else:
         context["user"] = user
         return render(request, 'BrandAnalysisApp/UploadImage.html',context)
@@ -292,8 +291,8 @@ def forgotpassword(request):
         username = request.POST['uemail']
         user = UserCustom.objects.get(uemail=username)
         sendEmail(request,user,"Please click the link below to reset your password.","reset","Link for password reset")
-        context["error"] = 'We sent link on register email id for reset your password.'
-        return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
+        messages.success(request, "We sent link on register email id for reset your password.")
+        return redirect('forgotpassword')
     else:
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
 
@@ -465,8 +464,8 @@ def changeProfile(request):
             user.usemail = editform.instance.usemail
             user.ureportfrequency = editform.instance.ureportfrequency
             user.save()
-            context["error"] = "Profile updated successfully"
-        return render(request, 'BrandAnalysisApp/editcompanyprofile.html', context)
+            messages.success(request,"Profile updated successfully")
+        return redirect('changeProfile')
     else:
         return render(request, 'BrandAnalysisApp/editcompanyprofile.html', context)
 
@@ -483,16 +482,14 @@ def changePassword(request):
         newpwd = request.POST["newpwd"]
         confirmpwd = request.POST["confirmpwd"]
         if user.upassword != opwd:
-            context["error"] = "Old Password does not matched"
-            return render(request, 'BrandAnalysisApp/changepassword.html', context)
+            messages.success(request, "Old Password does not matched")
         elif newpwd != confirmpwd:
-            context["error"] = "New password does not matched"
-            return render(request, 'BrandAnalysisApp/changepassword.html', context)
+            messages.success(request, "New password does not matched")
         else:
             user.upassword = newpwd
             user.save()
-            context["error"] = "Password updated Successfully"
-            return render(request, 'BrandAnalysisApp/changepassword.html', context)
+            messages.success(request, "Password updated Successfully")
+        return redirect('changePassword')
     else:
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/changepassword.html', context)
@@ -505,6 +502,17 @@ def help(request):
     user = UserCustom.objects.get(id=request.session.get("userid"))
     context["user"] = user
     if request.method == "POST":
-        return render(request, 'BrandAnalysisApp/help.html', context)
+        page = HelpPage(request.POST)
+        if not page.is_valid():
+            helptable = HelpTable()
+            helptable.msg = page.instance.msg
+            helptable.save()
+            msg = "Your help ID: " + str(helptable.id) + "\nYour query has been submitted successfully. Sip a cup of coffee until our help team responds you back."
+            sendEmail(request,user,msg,"","Query successfully submitted")
+            messages.success(request, "Your query submitted successfully. Please check your registed email for help id.")
+            return redirect('help')
+        else:
+            messages.success(request, "Your query submitted successfully. Please check your registed email for help id.")
+            return redirect('help')
     else:
         return render(request, 'BrandAnalysisApp/help.html', context)

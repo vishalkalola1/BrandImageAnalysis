@@ -6,8 +6,14 @@
 {% endblock %}
 {% block title %} Client Registration | Stalk Market {% endblock %}
 {% block content %}
-{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
-	<br/>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show">
+            <strong>Success!</strong> {{message}}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    {% endfor %}
+{% endif %}
 	<div class="container bg-light ">
 		<!-- Header------------------------- -->
 		<div class="row">

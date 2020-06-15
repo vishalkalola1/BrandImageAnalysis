@@ -88,27 +88,32 @@
     <!-- sidemenu table  end   -->
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-      <br/>
-      <div class="text-center pt-3 pb-2 mb-3 border">
+        <br/>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show">
+                    <strong>Success!</strong> {{message}}
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="text-center pt-3 pb-2 mb-3 border">
         <h1 class="h2">How can we help you with?</h1>
 
         <!-- change password form -->
 
-        <form class="form-signin col-md-6 offset-md-3" id="changePForm">
-          <div class="form-group">
-            <label for="exampleFormControlTextarea1">Type your message</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
-          </div>
+        <form class="form-signin col-md-6 offset-md-3" id="changePForm" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Type your message</label>
+                    <textarea name="msg" class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+            </div>
 
-          <div class="form-group">
-            <button class="btn btn-primary" type="submit">Send</button>
-          </div>
-
-
+            <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Send</button>
+            </div>
         </form>
       </div>
-
-
     </main>
   </div>
 </div>

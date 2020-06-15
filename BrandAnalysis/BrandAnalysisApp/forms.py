@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserCustom, uploadFile
+from .models import UserCustom, uploadFile, HelpTable
 
 class LoginForm(forms.ModelForm):
     class Meta:
@@ -31,5 +31,10 @@ class ChangePassword(forms.Form):
     old_password = forms.CharField(max_length=50)
     new_password = forms.CharField(max_length=50)
     reenter_password = forms.CharField(max_length=50)
+
+class HelpPage(forms.ModelForm):
+    class Meta:
+        model = HelpTable
+        fields = ['msg']
 
 

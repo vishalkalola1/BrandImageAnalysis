@@ -188,4 +188,14 @@ class ReportTable(models.Model):
         db_table = "ReportTable"
 
 
+class HelpTable(models.Model):
+    id = models.AutoField(primary_key=True)
+    msg = models.CharField(max_length=2000)
+    createdon = models.DateTimeField(default=timezone.now)
+    updatedon = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = "HelpTable"
+
+
 
