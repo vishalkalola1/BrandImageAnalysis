@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserCustom, uploadFile, HelpTable
+from .models import UserCustom, uploadFile, HelpTable,ContactUSTable
 
 class LoginForm(forms.ModelForm):
     class Meta:
@@ -36,5 +36,11 @@ class HelpPage(forms.ModelForm):
     class Meta:
         model = HelpTable
         fields = ['msg']
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactUSTable
+        fields = ['fullname','email','details','country']
 
 

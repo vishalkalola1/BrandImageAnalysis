@@ -3,24 +3,29 @@
 {% block head %}
 	<title> Contact Us | Stalk Market | Image Analysis</title>
     <link rel="stylesheet" href="{% static 'css/contactus.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 {% endblock %}
 {% block content %}
-{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
 <div class="container">
 	<div class="header_contact" >
-		<h2>Contact Us</h2>
+		<h1>Contact Us</h1>
 		<p>Contact us for a custom Quote</p>
 	</div>
-	
-
+    <br/>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show">
+                <h2></h2><strong>Success!</strong> {{message}}</h2>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="column">
-        <form action="/action_page.php">
+        <form method="post">
+            {% csrf_token %}
             <label for="fname">Full Name</label>
-            <input type="text" id="fname" name="firstname" placeholder="Your fullname" required>
+            <input type="text" name="fullname" id="fname" name="firstname" maxlength="200" placeholder="Your fullname" required>
             <label>Work Email</label>
-            <input type="email" id="wemail" name="wemail" required placeholder="Your email">
-            <label>Phone</label>
-            <input type="tel" id="Phone" name="tel"  placeholder="Valid Phone">
+            <input type="email" name="email" id="wemail" name="wemail" required placeholder="Your email">
             <label for="country">Country</label>
             <select id="country" name="country">
                 <option value="australia">France</option>
@@ -29,20 +34,16 @@
             </select>
 
             <label for="subject">Additional Details</label>
-            <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea>
+            <textarea id="subject" name="details" placeholder="Write something.." maxlength="2000" style="height:170px"></textarea>
             <input type="submit" value="Inquire">
         </form>
     </div>
-
-
     <div class="row">
         <div class="column">
             <div class="col-md-6 reason-content">
                 <h2>For general inquiries</h2>
-                <p>Call us at:
-                <a href="tel:#">1-000-000-0000</a></p>
-                <p>or send us an email at</p>
-                <a href="#">contact@stalkmarket.com</a>
+                <p>Send us an email at</p>
+                <a href="#">contact.stalkmarket@gmail.com</a>
                 <br>
                 <br>
                 <p style="margin:0;">Hours of Operation</p>
@@ -55,7 +56,7 @@
                 </div>
 
                 <h2>For StalkMarket Support</h2>
-                Stalk Market customers, <a href="#">LOG IN</a> to talk to our team
+                Stalk Market customers, <a href="login">LOG IN</a> to talk to our team
                 <br>
                 <a href="#"><img alt="Stalk Market" title="Stalk Market | Image Analysis" src="{% static 'assets/logo.png' %}" width="300"></a>
             </div>

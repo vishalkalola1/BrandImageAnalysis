@@ -8,32 +8,25 @@
   // Graphs
   var ctx = document.getElementById('myChart').getContext('2d');
   // eslint-disable-next-line no-unused-vars
+  var piedata = JSON.parse(document.getElementById('piedata').textContent);
+  var pielabels = JSON.parse(document.getElementById('pielabels').textContent);
   var myChart = new Chart(ctx, {
     type: 'pie',
     data: {
       datasets: [{
-          data: [
-            12131,
-            56565,
-            23823,
-            23282,
-            64378,
-          ],
+          data: piedata,
           backgroundColor: [
-           '#FF5733',
-            '#D89600',
-            '#E1BD07',
-            '#07CAE1',
-            '#07E1B9',
+            "#ff0000",
+            '#ffa500',
+            '#ffff00',
+            '#008000',
+            '#0000ff',
+            '#4b0082',
+            '#ee82ee',
+            '#00FFFF'
           ],
       }],
-      labels: [
-        'Facebook',
-        'Instagram',
-        'Twitter',
-        'linkedin',
-        'Snapchat'
-      ]
+      labels: pielabels
     },
     options: {
       responsive: true

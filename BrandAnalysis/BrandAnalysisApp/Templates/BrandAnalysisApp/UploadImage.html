@@ -12,11 +12,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="header" style="font-size:0;">
+<div class="d-flex flex-row" style="background-color:#d4d4d4; height:70px;">
 	<img class="imgheader" src="{% static 'assets/logo.png' %}">
 </div>
+{% if not messages %}
 <br/>
-{% if error %}<p><strong>{{ error }}</strong></p>{% endif %}
+{% endif %}
 {% if messages %}
 	{% for message in messages %}
 		<div class="alert alert-success alert-dismissible fade show">

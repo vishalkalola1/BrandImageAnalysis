@@ -6,8 +6,6 @@ body {
 }
 
 .header {
-    overflow: hidden;
-    padding: 10px 5px;
     background-color:gray;
     height:80px;
 }

@@ -155,6 +155,7 @@ class SafeSearchAnnotation(models.Model):
     class Meta:
         db_table = "SafeSearchAnnotation"
 
+
 class TextAnnotations(models.Model):
     id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=1000)
@@ -196,6 +197,21 @@ class HelpTable(models.Model):
 
     class Meta:
         db_table = "HelpTable"
+
+class ContactUSTable(models.Model):
+    id = models.AutoField(primary_key=True)
+    fullname = models.CharField(max_length=200)
+    email = models.EmailField()
+    details = models.CharField(max_length=2000)
+    country = models.CharField(max_length=2000)
+    attend = models.BooleanField(default=False)
+    createdon = models.DateTimeField(default=timezone.now)
+    updatedon = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = "ContactUSTable"
+
+
 
 
 

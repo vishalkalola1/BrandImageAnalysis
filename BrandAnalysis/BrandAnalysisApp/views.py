@@ -1,14 +1,10 @@
 import io
 import os
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
-from .forms import LoginForm, RegisterForm, UploadFileForm, EditUserForm, EditClientForm, ChangePassword, HelpPage
-from .models import UserCustom,UploadFileAnnotations, LogoAnnotations, LabelAnnotations, FaceAnnotations, ImagePropertiesAnnotation, FullTextAnnotation, LandmarkAnnotations, LocationAnnotations, LocalizedObjectAnnotations, SafeSearchAnnotation, TextAnnotations, LanguageAnnotations, ReportTable, HelpTable
-from django.urls import reverse
-from django.contrib.auth.models import User,auth
+from .forms import LoginForm, RegisterForm, UploadFileForm, EditUserForm, EditClientForm, HelpPage,ContactForm
+from .models import UserCustom,UploadFileAnnotations, LogoAnnotations, LabelAnnotations, FaceAnnotations, ImagePropertiesAnnotation, FullTextAnnotation, LandmarkAnnotations, LocationAnnotations, LocalizedObjectAnnotations, SafeSearchAnnotation, TextAnnotations, LanguageAnnotations, ReportTable, HelpTable, ContactUSTable
+from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .Controllers.TokenGenerator import account_activation_token
 from django.core.mail import EmailMessage
@@ -17,7 +13,6 @@ from google.cloud import vision
 from google.cloud.vision import types
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from django.contrib.sessions.models import Session
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
 
@@ -192,12 +187,13 @@ def callgoogleVisionAPi(obj,user, imageid):
     response = client.text_detection(image=image)
     texts = response.text_annotations
     for text in texts:
-        fulltext = TextAnnotations()
-        fulltext.description = text.description
-        fulltext.locale = text.locale
-        fulltext.userid = user
-        fulltext.imageid = imageid
-        fulltext.save()
+        if text.locale != "":
+            fulltext = TextAnnotations()
+            fulltext.description = text.description
+            fulltext.locale = text.locale
+            fulltext.userid = user
+            fulltext.imageid = imageid
+            fulltext.save()
 
 # Performs Landmark detection on the image file
     response = client.landmark_detection(image=image)
@@ -268,8 +264,16 @@ def callgoogleVisionAPi(obj,user, imageid):
 def contactus(request):
     context = {}
     if request.method == "POST":
-        context["error"] = "Contact us Submmited"
-        return render(request, 'BrandAnalysisApp/ContactUs.html',context)
+        contactform = ContactForm(request.POST)
+        if contactform.is_valid():
+            contacttable = ContactUSTable()
+            contacttable.fullname = contactform.instance.fullname
+            contacttable.email = contactform.instance.email
+            contacttable.details = contactform.instance.details
+            contacttable.country = contactform.instance.country
+            contacttable.save()
+            messages.success(request, "We will get back to you soon.")
+            return redirect('contactus')
     else:
         return render(request, 'BrandAnalysisApp/ContactUs.html',context)
 
@@ -296,7 +300,6 @@ def forgotpassword(request):
     else:
         return render(request, 'BrandAnalysisApp/ForgotPassword.html',context)
 
-
 def sendEmail(request,user,msg,url,mailsubject):
     current_site = get_current_site(request)
     mail_subject = mailsubject
@@ -312,7 +315,6 @@ def sendEmail(request,user,msg,url,mailsubject):
         mail_subject, message, to=[user.uemail]
     )
     email.send()
-
 
 def reset(request,id,token):
     context = {}
@@ -389,13 +391,12 @@ def editcompany(request,id):
             user.save()
             context["user"] = user
             context["noreport"] = count
-            context["error"] = "Successfully updated data"
+            messages.success(request, "Successfully updated data")
         else:
-            context["error"] = "Something went wrong try again later"
-        return render(request, 'BrandAnalysisApp/editchanel.html', context)
+            messages.success(request, "Something went wrong try again later")
+        return redirect('editcompany',id)
 
     else:
-        context["error"] = ""
         context["user"] = user
         context["noreport"] = count
         context["form"] = EditUserForm()
@@ -424,7 +425,7 @@ def delete(request,id): # Todo
 
     # instance = UserCustom.objects.get(id=id)
     # instance.delete()
-    context["error"] = "Record deleted sucessfully."
+    messages.success(request, "Record deleted sucessfully.")
     return HttpResponseRedirect("/adminHome")
 
 def logout(request):
@@ -439,7 +440,7 @@ def logout(request):
 def dashboard(request):
     context = {}
 
-    if (request.session.get('userid') is None):
+    if (request.session.get('userid') is None): # or request.session.get("usertype").lower() == "admin" :
         return redirect('home')
 
     user = UserCustom.objects.get(id=request.session.get("userid"))
@@ -447,11 +448,23 @@ def dashboard(request):
     if request.method == "POST":
         return render(request, 'BrandAnalysisApp/dashboard.html', context)
     else:
+        data = []
+        labels = ["coco","paris","chanel","parfum","mademoiselle","eau","noir","rouge"]
+        totaltextdata = TextAnnotations.objects.count()
+        for label in labels:
+            results = TextAnnotations.objects.filter(description__icontains=label).exclude(locale__exact='').count()
+            percentage = '{0:.2f}'.format((results / totaltextdata * 100));
+            data.append(percentage)
+
+
+        context["piedata"] = data
+        context["pielabels"] = labels
+
         return render(request, 'BrandAnalysisApp/dashboard.html', context)
 
 def changeProfile(request):
     context = {}
-    if (request.session.get('userid') is None):
+    if (request.session.get('userid') is None) or request.session.get("usertype").lower() == "admin":
         return redirect('home')
 
     user = UserCustom.objects.get(id=request.session.get("userid"))
@@ -472,7 +485,7 @@ def changeProfile(request):
 def changePassword(request):
     context = {}
 
-    if (request.session.get('userid') is None):
+    if (request.session.get('userid') is None) or request.session.get("usertype").lower() == "admin":
         return redirect('home')
 
     user = UserCustom.objects.get(id=request.session.get("userid"))
@@ -496,7 +509,7 @@ def changePassword(request):
 
 def help(request):
     context = {}
-    if (request.session.get('userid') is None):
+    if (request.session.get('userid') is None) or request.session.get("usertype").lower() == "admin":
         return redirect('home')
 
     user = UserCustom.objects.get(id=request.session.get("userid"))
