@@ -448,19 +448,48 @@ def dashboard(request):
     if request.method == "POST":
         return render(request, 'BrandAnalysisApp/dashboard.html', context)
     else:
-        data = []
-        labels = ["coco","paris","chanel","parfum","mademoiselle","eau","noir","rouge"]
-        totaltextdata = TextAnnotations.objects.count()
-        for label in labels:
-            results = TextAnnotations.objects.filter(description__icontains=label).exclude(locale__exact='').count()
-            percentage = '{0:.2f}'.format((results / totaltextdata * 100));
-            data.append(percentage)
+        piedata = makePieChart()
+        context["piedata"] = piedata[0]
+        context["pielabels"] = piedata[1]
 
-
-        context["piedata"] = data
-        context["pielabels"] = labels
-
+        groupbarchart = makeGroupChart()
+        context["groupbardata"] = groupbarchart[0]
+        context["groupbarlabel"] = groupbarchart[1]
+        context["grouplikelyhood"] = groupbarchart[2]
         return render(request, 'BrandAnalysisApp/dashboard.html', context)
+
+def makeGroupChart():
+    data = []
+    labels = []
+    likelihood_name = ('VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE', 'LIKELY', 'VERY_LIKELY')
+    names = FaceAnnotations._meta.get_fields()
+    for name in names:
+        if name.column not in ["id","createdon","updatedon","imageid_id","userid_id"]:
+            labels.append(name.column)
+    totalcount = FaceAnnotations.objects.count()
+    for label in labels:
+        temparray = []
+        for hoodname in likelihood_name:
+            field_name_icontains = label + '__icontains'
+            count = FaceAnnotations.objects.filter(**{field_name_icontains: hoodname}).count()
+            percentage = calculatePercentage(count,totalcount)
+            temparray.append(percentage)
+        data.append(temparray)
+    return (data,labels,likelihood_name)
+
+def makePieChart():
+    data = []
+    labels = ["coco", "paris", "chanel", "parfum", "mademoiselle", "eau", "noir", "rouge"]
+    totaltextdata = TextAnnotations.objects.exclude(locale__exact='').count()
+    for label in labels:
+        results = TextAnnotations.objects.filter(description__icontains=label).exclude(locale__exact='').count()
+        percentage = calculatePercentage(results, totaltextdata)
+        data.append(percentage)
+    return (data,labels)
+
+def calculatePercentage(obtaintcount,totalcount):
+    percentage = '{0:.2f}'.format((obtaintcount / totalcount * 100));
+    return percentage
 
 def changeProfile(request):
     context = {}
