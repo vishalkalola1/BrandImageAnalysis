@@ -133,7 +133,7 @@ def callgoogleVisionAPi(obj,user, imageid):
         content = image_file.read()
     image = types.Image(content=content)
 
-# Performs label detection on the image file
+    # Performs label detection on the image file
     response = client.label_detection(image=image)
     labels = response.label_annotations
     for label in labels:
@@ -143,7 +143,7 @@ def callgoogleVisionAPi(obj,user, imageid):
         labelobj.userid = user
         labelobj.save()
 
-# Performs logo detection on the image file
+    # Performs logo detection on the image file
     response = client.logo_detection(image=image)
     logos = response.logo_annotations
     for logo in logos:
@@ -153,7 +153,7 @@ def callgoogleVisionAPi(obj,user, imageid):
         logoobj.imageid = imageid
         logoobj.save()
 
-# Performs face detection on the image file
+    # Performs face detection on the image file
     response = client.face_detection(image=image)
     faces = response.face_annotations
     for face in faces:
@@ -169,7 +169,7 @@ def callgoogleVisionAPi(obj,user, imageid):
         faceobj.underExposed = likelihood_name[face.under_exposed_likelihood]
         faceobj.save()
 
-# Performs color detection on the image file
+    # Performs color detection on the image file
     response = client.image_properties(image=image)
     properties = response.image_properties_annotation
     for color in properties.dominant_colors.colors:
@@ -183,7 +183,7 @@ def callgoogleVisionAPi(obj,user, imageid):
         imageproperty.userid = user
         imageproperty.save()
 
-# Performs text detection on the image file
+    # Performs text detection on the image file
     response = client.text_detection(image=image)
     texts = response.text_annotations
     for text in texts:
@@ -195,12 +195,12 @@ def callgoogleVisionAPi(obj,user, imageid):
             fulltext.imageid = imageid
             fulltext.save()
 
-# Performs Landmark detection on the image file
+    # Performs Landmark detection on the image file
     response = client.landmark_detection(image=image)
     landmarks = response.landmark_annotations
     for landmark in landmarks:
         landmarkobj = LandmarkAnnotations()
-        landmarkobj.description = text.description
+        landmarkobj.description = landmark.description
         landmarkobj.locale = text.locale
         landmarkobj.userid = user
         landmarkobj.imageid = imageid
@@ -217,7 +217,7 @@ def callgoogleVisionAPi(obj,user, imageid):
             locationobj.landmarkid = landmarkobj
             locationobj.save()
 
-# Performs localized detection on the image file
+    # Performs localized detection on the image file
     response = client.object_localization(image=image)
     objects = response.localized_object_annotations
     for objectobj in objects:
@@ -228,7 +228,7 @@ def callgoogleVisionAPi(obj,user, imageid):
         localizedobject.save()
 
 
-# Performs localized detection on the image file
+    # Performs localized detection on the image file
     response = client.safe_search_detection(image=image)
     objects = response.safe_search_annotation
     safesearch = SafeSearchAnnotation()
@@ -241,7 +241,7 @@ def callgoogleVisionAPi(obj,user, imageid):
     safesearch.userid = user
     safesearch.save()
 
-# Performs localized detection on the image file
+    # Performs localized detection on the image file
     response = client.document_text_detection(image=image)
     document = response.full_text_annotation
 
@@ -267,15 +267,17 @@ def contactus(request):
         contactform = ContactForm(request.POST)
         if contactform.is_valid():
             contacttable = ContactUSTable()
-            contacttable.fullname = contactform.instance.fullname
+            contacttable.firstname = contactform.instance.firstname
+            contacttable.lastname = contactform.instance.lastname
             contacttable.email = contactform.instance.email
             contacttable.details = contactform.instance.details
-            contacttable.country = contactform.instance.country
+            contacttable.mobile = contactform.instance.mobile
             contacttable.save()
+            sendContactEmail(contacttable.email,contacttable.firstname,"Query successfully submitted","Your query has been submitted successfully to Stalk Market. Our team will get back to you as soon as possible within 24hrs. Thank you!")
             messages.success(request, "We will get back to you soon.")
             return redirect('contactus')
     else:
-        return render(request, 'BrandAnalysisApp/ContactUs.html',context)
+        return render(request, 'BrandAnalysisApp/contactus.html',context)
 
 def activate(request, id, token):
     try:
@@ -313,6 +315,17 @@ def sendEmail(request,user,msg,url,mailsubject):
     })
     email = EmailMessage(
         mail_subject, message, to=[user.uemail]
+    )
+    email.send()
+
+def sendContactEmail(email,name,mailsubject,msg):
+    mail_subject = mailsubject
+    message = render_to_string('BrandAnalysisApp/Contact_us_email.html', {
+        'user': name,
+        'msg': msg
+    })
+    email = EmailMessage(
+        mail_subject, message, to=[email]
     )
     email.send()
 
@@ -361,7 +374,6 @@ def adminHome(request):
                     if len(reportobj) > 0:
                         tempArray.append({"user":users[subindex],"reports":reportobj[0]})
                     tempArray.append({"user": users[subindex], "reports": reportobj})
-
                 else:
                     break
             mainArray.append(tempArray)
@@ -448,47 +460,211 @@ def dashboard(request):
     if request.method == "POST":
         return render(request, 'BrandAnalysisApp/dashboard.html', context)
     else:
-        piedata = makePieChart()
+        # chart - 1
+        labeldata = makeLabelData(user)
+        context["labeldata"] = labeldata[0]
+        context["labellabels"] = labeldata[1]
+
+        # chart - 2
+        piedata = makePieChart(user)
         context["piedata"] = piedata[0]
         context["pielabels"] = piedata[1]
 
-        groupbarchart = makeGroupChart()
+        # Chart - 3
+        groupbarchart = makeGroupChart(user)
         context["groupbardata"] = groupbarchart[0]
         context["groupbarlabel"] = groupbarchart[1]
         context["grouplikelyhood"] = groupbarchart[2]
+
+        # Chart - 4
+        horizontalbarchart = makeHorizontalGroupChart(user)
+        context["horizontalbarchartdata"] = horizontalbarchart[0]
+        context["horizontalbarchartlabel"] = horizontalbarchart[1]
+
+        #chart - 5
+
+        data = makelogoAnnotationPie(user)
+        context["logodata"] = data[0]
+        context["logolabel"] = data[1]
+
+        localizedData = makelocalizedobjectPie(user)
+        context["localizedData"] = localizedData[0]
+        context["localizedLabel"] = localizedData[1]
+
+        mapdata = makMapData(user)
+        context["mapdata"] = mapdata
+
         return render(request, 'BrandAnalysisApp/dashboard.html', context)
 
-def makeGroupChart():
+
+def makMapData(user):
+    data = []
+    alllandmarks = LandmarkAnnotations.objects.filter(userid=user.id)
+    count = alllandmarks.count()
+
+    for label in alllandmarks:
+        tempdata = []
+        tempdata.append(label.description)
+        results = LocationAnnotations.objects.filter(landmarkid=label.id)
+        for location in results:
+            tempdata.append(location.latitude)
+            tempdata.append(location.longitude)
+        data.append(tempdata)
+    return data
+
+def makelocalizedobjectPie(user):
+    data = []
+    totaltextdata = LocalizedObjectAnnotations.objects.filter(userid=user.id).count()
+
+    templabels = LocalizedObjectAnnotations.objects.filter(userid=user.id).values('name').distinct()
+    labels = []
+
+    for obj in templabels:
+        labels.append(obj["name"])
+
+    for label in labels:
+        results = LocalizedObjectAnnotations.objects.filter(name__icontains=label, userid=user.id).count()
+        percentage = calculatePercentage(results, totaltextdata)
+        data.append(percentage)
+    return (data, labels)
+
+def makelogoAnnotationPie(user):
+    data = []
+    totaltextdata = LogoAnnotations.objects.filter(userid=user.id).count()
+
+    templabels = LogoAnnotations.objects.filter(userid=user.id).values('description').distinct()
+    labels = []
+
+    for obj in templabels:
+        labels.append(obj["description"])
+
+    for label in labels:
+        results = LogoAnnotations.objects.filter(description__icontains=label,userid=user.id).count()
+        percentage = calculatePercentage(results, totaltextdata)
+        data.append(percentage)
+    return (data,labels)
+
+def makeHorizontalGroupChart(user):
     data = []
     labels = []
-    likelihood_name = ('VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE', 'LIKELY', 'VERY_LIKELY')
+    likelihood_name = (('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY'), ('POSSIBLE', 'LIKELY', 'VERY_LIKELY'))
+    names = SafeSearchAnnotation._meta.get_fields()
+    for name in names:
+        if name.column not in ["id", "createdon", "updatedon", "imageid_id", "userid_id"]:
+            labels.append(name.column)
+    totalcount = SafeSearchAnnotation.objects.filter(userid=user.id).count()
+    for label in labels:
+        temparray = []
+        for hoodnames in likelihood_name:
+            tempcount = 0
+            for hoodname in hoodnames:
+                labeltemp = label + '__iexact'
+                userid = 'userid'
+                count = SafeSearchAnnotation.objects.filter(**{labeltemp: hoodname, userid: user.id}).count()
+                tempcount += count
+            percentage = calculatePercentage(tempcount, totalcount)
+            temparray.append(percentage)
+        data.append(temparray)
+    data1 = []
+    data2 = []
+
+    for temp in data:
+        data1.append(temp[0])
+        data2.append(temp[1])
+    data = [data1,data2]
+    return (data, labels)
+
+def makeLabelData(user):
+    data = []
+    labels = []
+
+    data = []
+    categorylabel1 = ["Product","Cosmetics","Beauty","Perfume","Fashion Accessory"]
+    categorylabel2 = ["Skin","Hand","Nail","Finger","Lip"]
+    categorylabel3 = ["Pink","Brown","White","Beige","Red","Black"]
+    categorylabel4 = ["Plant","Glass","Bottle","Water","Liquid","Flower"]
+    subCategorylabel4 = ["leaf", "artificial flower", "bouquet", "Rose"]
+
+    totaltextdata = LabelAnnotations.objects.filter(userid=user.id).count()
+
+    category1 = []
+    for label in categorylabel1:
+        results = LabelAnnotations.objects.filter(description__icontains=label, userid=user.id).count()
+        percentage = calculatePercentage(results, totaltextdata)
+        category1.append(percentage)
+
+    data.append(category1)
+    labels.append(categorylabel1)
+
+    category2 = []
+    for label in categorylabel2:
+        results = LabelAnnotations.objects.filter(description__icontains=label, userid=user.id).count()
+        percentage = calculatePercentage(results, totaltextdata)
+        category2.append(percentage)
+
+    data.append(category2)
+    labels.append(categorylabel2)
+
+    category3 = []
+    for label in categorylabel3:
+        results = LabelAnnotations.objects.filter(description__icontains=label, userid=user.id).count()
+        percentage = calculatePercentage(results, totaltextdata)
+        category3.append(percentage)
+
+    data.append(category3)
+    labels.append(categorylabel3)
+
+    category4 = []
+    for label in categorylabel4:
+        if label.lower() != "flower":
+            results = LabelAnnotations.objects.filter(description__icontains=label, userid=user.id).count()
+            percentage = calculatePercentage(results, totaltextdata)
+            category4.append(percentage)
+        else:
+            tempSum = 0
+            for obj in subCategorylabel4:
+                results = LabelAnnotations.objects.filter(description__icontains=obj, userid=user.id).count()
+                tempSum += results
+            percentage = calculatePercentage(results, totaltextdata)
+            category4.append(percentage)
+
+    data.append(category4)
+    labels.append(categorylabel4)
+
+    return (data,labels)
+
+def makeGroupChart(user):
+    data = []
+    labels = []
+    likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE', 'LIKELY', 'VERY_LIKELY')
     names = FaceAnnotations._meta.get_fields()
     for name in names:
         if name.column not in ["id","createdon","updatedon","imageid_id","userid_id"]:
             labels.append(name.column)
-    totalcount = FaceAnnotations.objects.count()
+    totalcount = FaceAnnotations.objects.filter(userid=user.id).count()
     for label in labels:
         temparray = []
         for hoodname in likelihood_name:
             field_name_icontains = label + '__icontains'
-            count = FaceAnnotations.objects.filter(**{field_name_icontains: hoodname}).count()
+            userid = 'userid'
+            count = FaceAnnotations.objects.filter(**{field_name_icontains: hoodname, userid:user.id}).count()
             percentage = calculatePercentage(count,totalcount)
             temparray.append(percentage)
         data.append(temparray)
     return (data,labels,likelihood_name)
 
-def makePieChart():
+def makePieChart(user):
     data = []
     labels = ["coco", "paris", "chanel", "parfum", "mademoiselle", "eau", "noir", "rouge"]
-    totaltextdata = TextAnnotations.objects.exclude(locale__exact='').count()
+    totaltextdata = TextAnnotations.objects.filter(userid=user.id).exclude(locale__exact='').count()
     for label in labels:
-        results = TextAnnotations.objects.filter(description__icontains=label).exclude(locale__exact='').count()
+        results = TextAnnotations.objects.filter(description__icontains=label,userid=user.id).exclude(locale__exact='').count()
         percentage = calculatePercentage(results, totaltextdata)
         data.append(percentage)
     return (data,labels)
 
 def calculatePercentage(obtaintcount,totalcount):
-    percentage = '{0:.2f}'.format((obtaintcount / totalcount * 100));
+    percentage = (0 if totalcount== 0 else '{0:.2f}'.format((obtaintcount / totalcount * 100)))
     return percentage
 
 def changeProfile(request):

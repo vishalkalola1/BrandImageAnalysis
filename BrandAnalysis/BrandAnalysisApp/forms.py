@@ -41,6 +41,6 @@ class HelpPage(forms.ModelForm):
 class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactUSTable
-        fields = ['fullname','email','details','country']
+        fields = ['firstname','lastname','email','mobile','details']
 
 

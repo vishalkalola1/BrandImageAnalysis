@@ -17,7 +17,13 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-
+        <style>
+            #test{
+                background-image: url('/static/assets/background.jpg');
+                opacity: 0.5;
+                object-fit: contain;
+            }
+        </style>
 {% endblock %}
 {% block title %} Dashboard | Stalk Market {% endblock %}
 {% block content %}
@@ -45,7 +51,7 @@
         </nav>
         <!-- Masthead-->
         <header class="masthead">
-            <div class="container h-100">
+            <div class="container h-100" id="test">
                 <div class="row h-100 align-items-center justify-content-center text-center">
                     <div class="col-lg-10 align-self-end">
                         <h1 class="text-uppercase text-white font-weight-bold">UNDERSTAND <br> your cosumer</h1>
@@ -65,7 +71,10 @@
                     <div class="col-lg-8 text-center">
                         <h2 class="text-white mt-0">We've got what you need!</h2>
                         <hr class="divider light my-4" />
-                        <p class="text-white-50 mb-4">Stay confident in your brand perception. Monitor changes in sentiment, understand customer opinions, and track fluctuations in brand health.</p>
+                        <p class="text-white-50 mb-4">Image processing is a cool thing in today’s date in technology. But have you ever thought of implementing it to level up your branding game and creating best marketing strategies?
+Text processing and SEO has always been adopted when it comes to digital marketing. Let us talk about Image processing and how we can use it to brand you up with our tool.
+Stalk Market is a tool that processes social media images of specific brand using image processing technologies. We provide our clients with the insights of how their product is consumed by their customers. The project uses AI and Data technologies where we collect the images of your brand from various social media platforms and process them to provide the consumer insights by analysing the elements inside the images, emotions, texts  and the location of the picture taken. Voila! then, the brands use our reports from the tool for optimizing their marketing strategies.
+</p>
                         <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">How?</a>
                     </div>
                 </div>
@@ -80,29 +89,29 @@
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="mt-5">
                             <i class="fas fa-4x fa-gem text-primary mb-4"></i>
-                            <h3 class="h4 mb-2">Study Themes</h3>
-                            <p class="text-muted mb-0">Our themes are updated regularly to keep them bug free!</p>
+                            <h3 class="h4 mb-2">Image Collection</h3>
+                            <p class="text-muted mb-0">We collect images related to your brand from all the social media platforms online. We respect your customer’s privacy and we only collect and download the public images of your brand.</p>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="mt-5">
                             <i class="fas fa-4x fa-laptop-code text-primary mb-4"></i>
-                            <h3 class="h4 mb-2">Up to Date</h3>
-                            <p class="text-muted mb-0">All dependencies are kept current to keep things fresh.</p>
+                            <h3 class="h4 mb-2">Image Processing</h3>
+                            <p class="text-muted mb-0">After collection of images, we pass all the images through our image processing engine where it analyses the different elements like text, facial expressions, location, etc in the image.</p>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="mt-5">
                             <i class="fas fa-4x fa-globe text-primary mb-4"></i>
-                            <h3 class="h4 mb-2">Ready to Publish</h3>
-                            <p class="text-muted mb-0">You can use this design as is, or you can make changes!</p>
+                            <h3 class="h4 mb-2">Data Visualization</h3>
+                            <p class="text-muted mb-0">The image analysis results in huge data set with different classification. Those data are sorted and graphically represented in the form of bars and charts for easier readability.</p>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6 text-center">
                         <div class="mt-5">
                             <i class="fas fa-4x fa-heart text-primary mb-4"></i>
-                            <h3 class="h4 mb-2">Made with Love</h3>
-                            <p class="text-muted mb-0">Is it really open source if it's not made with love?</p>
+                            <h3 class="h4 mb-2">Report Generation</h3>
+                            <p class="text-muted mb-0"> The reports based on all the analysed classification is generated and passed to the client dashboard where the client can access, download, and print the specific reports.</p>
                         </div>
                     </div>
                 </div>
@@ -133,20 +142,21 @@
                           </div>
                           <h5 class="font-weight-bold mt-4 mb-3">Amrita Tiwarri</h5>
                           <p class="text-uppercase blue-text"><strong>PM & Technical Lead</strong></p>
-                          <p class="grey-text"> Msc. Software Engineering [descibtion] </p>
+                          <p class="grey-text"> MSc. in Computer Science Specialising in Software Engineering @Epita.
+I work with international teams every day and leading them is part of my job. I am passionate about designing and developing frontend applications. On my free time, I learn new technologies for fun. </p>
                           <ul class="list-unstyled mb-0">
                             <!-- Facebook -->
                             <a class="p-2 fa-lg fb-ic" href="https://www.linkedin.com/in/tiwariamrita">
                               <i class="fab fa-linkedin blue-text"> </i>
                             </a>
                             <!-- Twitter -->
-                            <a class="p-2 fa-lg tw-ic">
+                            <a class="p-2 fa-lg tw-ic" href="https://twitter.com/amytweeets">
                               <i class="fab fa-twitter blue-text"> </i>
                             </a>
-                            <!-- Instagram -->
-                            <a class="p-2 fa-lg ins-ic">
-                              <i class="fab fa-instagram blue-text"> </i>
-                            </a>
+<!--                            &lt;!&ndash; Instagram &ndash;&gt;-->
+<!--                            <a class="p-2 fa-lg ins-ic">-->
+<!--                              <i class="fab fa-instagram blue-text"> </i>-->
+<!--                            </a>-->
                           </ul>
                         </div>
                         <!-- Grid column -->
@@ -159,17 +169,18 @@
                           </div>
                           <h5 class="font-weight-bold mt-4 mb-3">Aravind Kumar</h5>
                           <p class="text-uppercase blue-text"><strong>Cloud Engineer</strong></p>
-                          <p class="grey-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem ipsa accusantium
-                            doloremque rem laudantium totam aperiam.</p>
+                          <p class="grey-text">MSc. in Computer Science Specialising in Computer Security and Networks @Epita.
+Experienced IT professional of 3 years, effectively implementing new technologies for user-friendly customer experience. Also, curious about knowing the security incidents in computer security world.
+</p>
                           <ul class="list-unstyled mb-0">
                             <!-- Facebook -->
                             <a class="p-2 fa-lg fb-ic" href="https://www.linkedin.com/in/aravind-kumar-k-1ba7b470" target="blank">
                               <i class="fab fa-linkedin blue-text"> </i>
                             </a>
-                            <!-- Instagram -->
-                            <a class="p-2 fa-lg ins-ic">
-                              <i class="fab fa-instagram blue-text"> </i>
-                            </a>
+<!--                            &lt;!&ndash; Instagram &ndash;&gt;-->
+<!--                            <a class="p-2 fa-lg ins-ic">-->
+<!--                              <i class="fab fa-instagram blue-text"> </i>-->
+<!--                            </a>-->
                           </ul>
                         </div>
                         <!-- Grid column -->
@@ -182,20 +193,17 @@
                           </div>
                           <h5 class="font-weight-bold mt-4 mb-3">Gaurav Nepal</h5>
                           <p class="text-uppercase blue-text"><strong>Data Engineer</strong></p>
-                          <p class="grey-text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                            mollit anim est fugiat nulla id eu laborum.</p>
+                          <p class="grey-text">MSc. in Computer Science Specialising in Data Science @Epita.
+I am a detail-oriented person who excels at maintaining large databases and analysis by creating detailed reports. Possess great analytical, multitasking skills, and significant ability to work in a team.</p>
                           <ul class="list-unstyled mb-0">
                             <!-- Facebook -->
                             <a class="p-2 fa-lg fb-ic" href="https://www.linkedin.com/in/gauravnepal" target="blank">
                               <i class="fab fa-linkedin blue-text"> </i>
                             </a>
-                            <!-- Instagram -->
-                            <a class="p-2 fa-lg ins-ic">
-                              <i class="fab fa-instagram blue-text"> </i>
-                            </a>
-                            <!-- Dribbble -->
-                            <a class="p-2 fa-lg ins-ic">
-                              <i class="fab fa-dribbble blue-text"> </i>
+
+                            <!-- Github -->
+                            <a class="p-2 fa-lg ins-ic" href="https://github.com/gauravnepal" target="blank" >
+                              <i class="fab fa-github blue-text"> </i>
                             </a>
                           </ul>
                         </div>
@@ -210,7 +218,7 @@
                           <h5 class="font-weight-bold mt-4 mb-3">Vishal KALOLA</h5>
                           <p class="text-uppercase blue-text"><strong>Lead FullStack developer</strong></p>
                           <p class="grey-text">
-                              Ingénieur logiciel avec 4 ans d'expérience en développement et tous les niveaux de test avec de solides compétences en résolution de problèmes et en analyse | Trouvez la position d'un développeur FullStack
+                              MSc. in Computer Science Specialising in Software Engineering @Epita. I am a software engineer with 4 years of experience in development and all levels of testing with strong problem solving and analytical skills. I like learning new development frameworks.
                           </p>
                           <ul class="list-unstyled mb-0">
                             <!-- Facebook -->
@@ -243,7 +251,7 @@
             <div class="container text-center">
                 <h2 class="mb-4">Understand your Brand Reputation <br>
 Understand how consumers talk about you online with StalMarket's  Image Analyis on Social Media. Make faster, data-driven decisions today!</h2>
-                <a class="btn btn-light btn-xl" href="#">Request a Demo!</a>
+                <a class="btn btn-light btn-xl" href="login">Request a Demo!</a>
             </div>
         </section>
         <!-- Contact-->

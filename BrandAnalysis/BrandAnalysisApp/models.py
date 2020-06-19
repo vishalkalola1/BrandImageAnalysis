@@ -131,7 +131,7 @@ class LocationAnnotations(models.Model):
 
 class LocalizedObjectAnnotations(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=1000)
     imageid = models.ForeignKey(UploadFileAnnotations, on_delete=models.CASCADE)
     userid = models.ForeignKey(UserCustom, on_delete=models.CASCADE)
     createdon = models.DateTimeField(default=timezone.now)
@@ -200,11 +200,11 @@ class HelpTable(models.Model):
 
 class ContactUSTable(models.Model):
     id = models.AutoField(primary_key=True)
-    fullname = models.CharField(max_length=200)
+    firstname = models.CharField(max_length=200)
+    lastname = models.CharField(max_length=200)
     email = models.EmailField()
+    mobile = models.CharField(max_length=15)
     details = models.CharField(max_length=2000)
-    country = models.CharField(max_length=2000)
-    attend = models.BooleanField(default=False)
     createdon = models.DateTimeField(default=timezone.now)
     updatedon = models.DateTimeField(default=timezone.now)
 
