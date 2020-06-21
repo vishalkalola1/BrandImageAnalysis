@@ -65,13 +65,13 @@
                         </a>
                     </li>
 
-                    <!-- Reports -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'report' user.id %}">
-                            <span data-feather="bar-chart-2"></span>
-                            Reports
-                        </a>
-                    </li>
+<!--                    &lt;!&ndash; Reports &ndash;&gt;-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="{% url 'report' user.id %}">-->
+<!--                            <span data-feather="bar-chart-2"></span>-->
+<!--                            Reports-->
+<!--                        </a>-->
+<!--                    </li>-->
 
                     <!-- Change Password -->
                     <li class="nav-item">
@@ -98,8 +98,8 @@
                 <h1 class="h2">Dashboard</h1>
                 <div class="btn-toolbar  mb-2 mb-md-0">
                     <div class="btn-group mr-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+<!--                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>-->
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='{% url 'generatePDF' %}'">Generate PDF</button>
                     </div>
                 </div>
             </div>

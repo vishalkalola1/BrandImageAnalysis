@@ -14,6 +14,19 @@ from google.cloud.vision import types
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
+from django.template.loader import get_template
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from django.template import Context
+import pdfkit
+from django.shortcuts import HttpResponse
+from django.template.loader import get_template, render_to_string
+
+from fpdf import FPDF, HTMLMixin
+
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
 
 def home(request):
@@ -201,7 +214,7 @@ def callgoogleVisionAPi(obj,user, imageid):
     for landmark in landmarks:
         landmarkobj = LandmarkAnnotations()
         landmarkobj.description = landmark.description
-        landmarkobj.locale = text.locale
+        landmarkobj.locale = landmark.locale
         landmarkobj.userid = user
         landmarkobj.imageid = imageid
         landmarkobj.save()
@@ -734,3 +747,68 @@ def help(request):
             return redirect('help')
     else:
         return render(request, 'BrandAnalysisApp/help.html', context)
+
+def generatePDF(request):
+
+    context = {}
+
+    if (request.session.get('userid') is None): # or request.session.get("usertype").lower() == "admin" :
+        return redirect('home')
+
+    user = UserCustom.objects.get(id=request.session.get("userid"))
+
+
+    # chart - 1
+    labeldata = makeLabelData(user)
+
+
+    # chart - 2
+    piedata = makePieChart(user)
+
+
+    # Chart - 3
+    groupbarchart = makeGroupChart(user)
+
+
+    # Chart - 4
+    horizontalbarchart = makeHorizontalGroupChart(user)
+
+
+    # chart - 5
+
+    data = makelogoAnnotationPie(user)
+
+
+    localizedData = makelocalizedobjectPie(user)
+
+
+    mapdata = makMapData(user)
+
+
+    context = {
+        "user" : user,
+        "labeldata": labeldata[0],
+        "labellabels" :labeldata[1],
+        "piedata": piedata[0],
+        "pielabels": piedata[1],
+        "groupbardata" : groupbarchart[0],
+        "groupbarlabel" : groupbarchart[1],
+        "grouplikelyhood" : groupbarchart[2],
+        "horizontalbarchartdata" : horizontalbarchart[0],
+        "horizontalbarchartlabel" : horizontalbarchart[1],
+        "logodata": data[0],
+        "logolabel": data[1],
+        "localizedData": localizedData[0],
+        "localizedLabel": localizedData[1],
+        "mapdata":mapdata
+
+    }
+
+    return render(request, 'BrandAnalysisApp/ReportTemplate.html', context)
+
+# def generatePDF(request):
+#
+#     context = {}
+#
+#     return render(request, 'BrandAnalysisApp/ReportTemplate.html', context)
+

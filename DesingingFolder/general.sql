@@ -19,5 +19,18 @@ select * from UploadFileAnnotations;
 select * from HelpTable;
 select * from ContactUSTable;
 
-
+delete from uploadFile;
+delete from TextAnnotations;
+delete from SafeSearchAnnotation;
+delete from LogoAnnotations;
+delete from LocationAnnotations;
+delete from LocalizedObjectAnnotations;
+delete from LanguageAnnotations;
+delete from LandmarkAnnotations;
+delete from LabelAnnotations;
+delete from ImagePropertiesAnnotation;
+delete from FullTextAnnotation;
+delete from FaceAnnotations;
+delete from UploadFileAnnotations;
+delete from user;
 

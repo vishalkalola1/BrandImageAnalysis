@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .Controllers import GeneratePDF
 urlpatterns = [
     path('', views.home,name='home'),
     path('login',views.login,name='login'),
@@ -19,7 +20,7 @@ urlpatterns = [
     path('changeProfile',views.changeProfile, name='changeProfile'),
     path('changePassword',views.changePassword, name='changePassword'),
     path('help',views.help, name='help'),
-
+    path('generatePDF', views.generatePDF, name='generatePDF'),
     ###############################################################
     path('logout', views.logout,name='logout')
 ]

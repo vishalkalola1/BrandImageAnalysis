@@ -5,9 +5,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
 {% endblock %}
 {% block title %} SignIn Page {% endblock %}
 {% block content %}
+<div class="d-flex flex-row" style="background-color:#d4d4d4; height:70px;">
+	<img class="imgheader" src="{% static 'assets/logo.png' %}">
+</div>
 {% if messages %}
     {% for message in messages %}
         <div class="alert alert-success alert-dismissible fade show">
@@ -16,6 +20,7 @@
         </div>
     {% endfor %}
 {% endif %}
+<br>
 <div class="login-page">
     <div class="form">
         <h1> Login </h1>
