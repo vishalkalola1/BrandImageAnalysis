@@ -806,9 +806,3 @@ def generatePDF(request):
 
     return render(request, 'BrandAnalysisApp/ReportTemplate.html', context)
 
-# def generatePDF(request):
-#
-#     context = {}
-#
-#     return render(request, 'BrandAnalysisApp/ReportTemplate.html', context)
-

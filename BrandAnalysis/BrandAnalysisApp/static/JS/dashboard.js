@@ -366,7 +366,7 @@
      })
 //---------------------------------- pie end --------------------------------------
 //---------------------------------- Map Start --------------------------------------
-//google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', initialize);
 //---------------------------------- Map end --------------------------------------
 //getPDF()
 }())
@@ -380,45 +380,45 @@ function getRandomColor() {
     return color;
 }
 
-//function initialize() {
-//    var mapdata = JSON.parse(document.getElementById('mapdata').textContent);
-//    var myCenter = new google.maps.LatLng(48.7867584, 2.3551161);
-//    var locations = mapdata
-//    var myCenter = new google.maps.LatLng(locations[0][1], locations[0][2]);
-//    var mapProp = {
-//        center:myCenter,
-//        zoom:2,
-//        mapTypeId:google.maps.MapTypeId.ROADMAP
-//    };
-//    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-//    for (i = 0; i < locations.length; i++) {
-//        var icons = {
-//          pin: {
-//            icon: '/Users/vishal/Documents/Projects/PRI/BrandAnalysis/BrandAnalysisApp/static/assets/blue-dot.png'
-//          },
-//        };
-//        marker = new google.maps.Marker({
-//            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-//            map: map,
-//
-//            icon: {
-//                icon:icons['pin'].icon,
-//                size: new google.maps.Size(70, 86), //marker image size
-//                origin: new google.maps.Point(0, 0), // marker origin
-//                anchor: new google.maps.Point(35, 86) // X-axis value (35, half of marker width) and 86 is Y-axis value (height of the marker).
-//            }
-//        });
-//        var infowindow = new google.maps.InfoWindow({
-//                content: "This is a test marker"
-//        });
-//        google.maps.event.addListener(marker, 'click', (function(marker, i) {
-//            return function() {
-//                infowindow.setContent(locations[i][0]);
-//                infowindow.open(map, marker);
-//            }
-//        })(marker, i));
-//    }
-//}
+function initialize() {
+    var mapdata = JSON.parse(document.getElementById('mapdata').textContent);
+    var myCenter = new google.maps.LatLng(48.7867584, 2.3551161);
+    var locations = mapdata
+    var myCenter = new google.maps.LatLng(locations[0][1], locations[0][2]);
+    var mapProp = {
+        center:myCenter,
+        zoom:2,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    for (i = 0; i < locations.length; i++) {
+        var icons = {
+          pin: {
+            icon: '/Users/vishal/Documents/Projects/PRI/BrandAnalysis/BrandAnalysisApp/static/assets/blue-dot.png'
+          },
+        };
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map,
+
+            icon: {
+                icon:icons['pin'].icon,
+                size: new google.maps.Size(70, 86), //marker image size
+                origin: new google.maps.Point(0, 0), // marker origin
+                anchor: new google.maps.Point(35, 86) // X-axis value (35, half of marker width) and 86 is Y-axis value (height of the marker).
+            }
+        });
+        var infowindow = new google.maps.InfoWindow({
+                content: "This is a test marker"
+        });
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infowindow.setContent(locations[i][0]);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+    }
+}
 
 	function getPDF(){
 
