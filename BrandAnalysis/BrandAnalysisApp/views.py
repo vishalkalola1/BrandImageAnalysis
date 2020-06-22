@@ -14,17 +14,8 @@ from google.cloud.vision import types
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
-from django.template.loader import get_template
-from io import BytesIO
-from django.http import HttpResponse
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-from django.template import Context
-import pdfkit
 from django.shortcuts import HttpResponse
 from django.template.loader import get_template, render_to_string
-
-from fpdf import FPDF, HTMLMixin
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
