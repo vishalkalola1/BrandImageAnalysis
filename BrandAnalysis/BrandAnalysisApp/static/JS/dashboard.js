@@ -204,39 +204,44 @@
       var ctx = document.getElementById("groupbarchart").getContext("2d");
       var groupbardata = JSON.parse(document.getElementById('groupbardata').textContent);
       var groupbarlabel = JSON.parse(document.getElementById('groupbarlabel').textContent);
-      var grouplikelyhood = JSON.parse(document.getElementById('grouplikelyhood').textContent);
-      var i;
-      var dataYaxis = []
-      for (i = 0; i < grouplikelyhood.length; i++) {
-           dataYaxis.push({
-                label: grouplikelyhood[i],
-                backgroundColor: getRandomColor(),
-                data: groupbardata[i]
-            });
-      }
-
-      var data = {
-            labels: groupbarlabel,
-            datasets: dataYaxis
-       };
-
-      var myBarChart = new Chart(ctx, {
-            type: 'bar',
-            data: data,
+      var color1 = getRandomColor()
+      var color2 = getRandomColor()
+      var myHorizontalBarChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: groupbarlabel,
+                datasets: [{
+                  label: "Yes",
+                  backgroundColor: color1,
+                  hoverBackgroundColor: color1,
+                  data: groupbardata[1],
+                }, {
+                  label: "No",
+                  backgroundColor: color2,
+                  hoverBackgroundColor: color2,
+                  data: groupbardata[0]
+                }]
+            },
             options: {
-                barValueSpacing: 15,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                        }
-                    }]
-                },
-                title: {
-                    display: true,
-                    text: 'Face Annotation( in % )',
-                    fontSize:35
-                }
+                  legend: { display: true },
+                  title: {
+                        display: true,
+                        text: 'Face Annotations ( in % )',
+                        fontSize:35
+                  },
+                  scales: {
+                       xAxes: [{
+                            stacked: true,
+                            ticks: {
+                                min: 0
+                            }
+                       }],
+                       yAxes: [{
+                            stacked: true,
+
+                       }]
+                  },
+
             }
       });
 //---------------------------------- group bar end --------------------------------------
@@ -250,12 +255,12 @@
         data: {
             labels: horizontalbarchartlabel,
             datasets: [{
-              label: "Likely",
+              label: "Yes",
               backgroundColor: color1,
               hoverBackgroundColor: color1,
               data: horizontalbarchartdata[1],
             }, {
-              label: "Unlikely",
+              label: "No",
               backgroundColor: color2,
               hoverBackgroundColor: color2,
               data: horizontalbarchartdata[0]

@@ -26,7 +26,7 @@
 <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block title %} Dashboard | Stalk Market {% endblock %}
+{% block title %} Stalk Market {% endblock %}
 {% block content %}
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{% url 'dashboard' %}">STALK MARKET</a>
@@ -205,7 +205,7 @@
 {{ pielabels | json_script:"pielabels" }}
 {{ groupbardata | json_script:"groupbardata" }}
 {{ groupbarlabel | json_script:"groupbarlabel" }}
-{{ grouplikelyhood | json_script:"grouplikelyhood" }}
+<!--{{ grouplikelyhood | json_script:"grouplikelyhood" }}-->
 {{ labeldata | json_script:"labeldata" }}
 {{ labellabels | json_script:"labellabels" }}
 {{ horizontalbarchartdata | json_script:"horizontalbarchartdata" }}

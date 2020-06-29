@@ -13,10 +13,10 @@ from google.cloud import vision
 from google.cloud.vision import types
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.conf import settings
 
 from django.shortcuts import HttpResponse
 from django.template.loader import get_template, render_to_string
-
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
 
@@ -113,9 +113,10 @@ def uploadImage(request,id):
         context["user"] = user
         return render(request, 'BrandAnalysisApp/UploadImage.html',context)
 
-def handle_uploaded_file(f,name,user):
+def handle_uploaded_file(f,name,user): #todo
     filename_w_ext = os.path.basename(name)
-    path = '/Users/vishal/Documents/Projects/PRI/BrandAnalysis/BrandAnalysisApp/Media/' + filename_w_ext
+    pathProject = settings.BASE_DIR
+    path = pathProject + '/BrandAnalysisApp/Media/' + filename_w_ext
     with open(path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
@@ -230,7 +231,6 @@ def callgoogleVisionAPi(obj,user, imageid):
         localizedobject.userid = user
         localizedobject.imageid = imageid
         localizedobject.save()
-
 
     # Performs localized detection on the image file
     response = client.safe_search_detection(image=image)
@@ -367,7 +367,7 @@ def adminHome(request):
         context["error"] = ""
         return render(request, 'BrandAnalysisApp/homeadmin.html', context)
     else:
-        users = UserCustom.objects.all()
+        users = UserCustom.objects.all().exclude(utype='admin')
         count = 3
         mainArray = []
         for index in range(0, len(users), count):
@@ -433,7 +433,7 @@ def viewcompany(request,id):
         context["noreport"] = len(ReportTable.objects.filter(userid=id))
         return render(request, 'BrandAnalysisApp/clientdetail.html', context)
 
-def delete(request,id): # Todo
+def delete(request,id): # Todo Delete
     context = {}
 
     if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
@@ -456,7 +456,7 @@ def logout(request):
 def dashboard(request):
     context = {}
 
-    if (request.session.get('userid') is None): # or request.session.get("usertype").lower() == "admin" :
+    if (request.session.get('userid') is None) or request.session.get("usertype").lower() == "admin" :
         return redirect('home')
 
     user = UserCustom.objects.get(id=request.session.get("userid"))
@@ -478,7 +478,7 @@ def dashboard(request):
         groupbarchart = makeGroupChart(user)
         context["groupbardata"] = groupbarchart[0]
         context["groupbarlabel"] = groupbarchart[1]
-        context["grouplikelyhood"] = groupbarchart[2]
+        # context["grouplikelyhood"] = groupbarchart[2]
 
         # Chart - 4
         horizontalbarchart = makeHorizontalGroupChart(user)
@@ -520,11 +520,11 @@ def makelocalizedobjectPie(user):
     data = []
     totaltextdata = LocalizedObjectAnnotations.objects.filter(userid=user.id).count()
 
-    templabels = LocalizedObjectAnnotations.objects.filter(userid=user.id).values('name').distinct()
-    labels = []
+    # templabels = LocalizedObjectAnnotations.objects.filter(userid=user.id).values('name').distinct()
+    labels = ['packaged goods','bagged packaged goods','picture frame','person']
 
-    for obj in templabels:
-        labels.append(obj["name"])
+    # for obj in templabels:
+    #     labels.append(obj["name"])
 
     for label in labels:
         results = LocalizedObjectAnnotations.objects.filter(name__icontains=label, userid=user.id).count()
@@ -537,10 +537,10 @@ def makelogoAnnotationPie(user):
     totaltextdata = LogoAnnotations.objects.filter(userid=user.id).count()
 
     templabels = LogoAnnotations.objects.filter(userid=user.id).values('description').distinct()
-    labels = []
+    labels = ['chanel','coco','coco mademoiselle']
 
-    for obj in templabels:
-        labels.append(obj["description"])
+    # for obj in templabels:
+    #     labels.append(obj["description"])
 
     for label in labels:
         results = LogoAnnotations.objects.filter(description__icontains=label,userid=user.id).count()
@@ -640,22 +640,32 @@ def makeLabelData(user):
 def makeGroupChart(user):
     data = []
     labels = []
-    likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE', 'LIKELY', 'VERY_LIKELY')
+    likelihood_name = (('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY'), ('POSSIBLE', 'LIKELY', 'VERY_LIKELY'))
     names = FaceAnnotations._meta.get_fields()
     for name in names:
-        if name.column not in ["id","createdon","updatedon","imageid_id","userid_id"]:
+        if name.column not in ["id", "createdon", "updatedon", "imageid_id", "userid_id"]:
             labels.append(name.column)
     totalcount = FaceAnnotations.objects.filter(userid=user.id).count()
     for label in labels:
         temparray = []
-        for hoodname in likelihood_name:
-            field_name_icontains = label + '__icontains'
-            userid = 'userid'
-            count = FaceAnnotations.objects.filter(**{field_name_icontains: hoodname, userid:user.id}).count()
-            percentage = calculatePercentage(count,totalcount)
+        for hoodnames in likelihood_name:
+            tempcount = 0
+            for hoodname in hoodnames:
+                labeltemp = label + '__iexact'
+                userid = 'userid'
+                count = FaceAnnotations.objects.filter(**{labeltemp: hoodname, userid: user.id}).count()
+                tempcount += count
+            percentage = calculatePercentage(tempcount, totalcount)
             temparray.append(percentage)
         data.append(temparray)
-    return (data,labels,likelihood_name)
+    data1 = []
+    data2 = []
+
+    for temp in data:
+        data1.append(temp[0])
+        data2.append(temp[1])
+    data = [data1, data2]
+    return (data, labels)
 
 def makePieChart(user):
     data = []
@@ -668,7 +678,7 @@ def makePieChart(user):
     return (data,labels)
 
 def calculatePercentage(obtaintcount,totalcount):
-    percentage = (0 if totalcount== 0 else '{0:.2f}'.format((obtaintcount / totalcount * 100)))
+    percentage = (0 if totalcount == 0 else '{0:.2f}'.format((obtaintcount / totalcount * 100)))
     return percentage
 
 def changeProfile(request):
@@ -792,7 +802,6 @@ def generatePDF(request):
         "localizedData": localizedData[0],
         "localizedLabel": localizedData[1],
         "mapdata":mapdata
-
     }
 
     return render(request, 'BrandAnalysisApp/ReportTemplate.html', context)
