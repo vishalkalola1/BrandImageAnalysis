@@ -33,7 +33,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Category - 1',
+                    text: 'Product Category',
                     fontSize:20
                 },
                 layout: {
@@ -72,7 +72,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Category - 2',
+                    text: 'Body parts visible',
                     fontSize:20
                 },
                 layout: {
@@ -112,7 +112,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Category - 3',
+                    text: 'Major Colors',
                     fontSize:20
                 },
                 layout: {
@@ -152,7 +152,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Category - 4',
+                    text: 'Objects Detected',
                     fontSize:20
                 },
                 layout: {
@@ -192,7 +192,7 @@
             options: {
                 title: {
                     display: true,
-                    text: 'Text Annotation( in % )',
+                    text: 'Text Annotation( Each over % )',
                     fontSize:35
                 },
                 responsive: true
@@ -226,7 +226,7 @@
                   legend: { display: true },
                   title: {
                         display: true,
-                        text: 'Face Annotations ( in % )',
+                        text: 'Face Annotations ( Each over % )',
                         fontSize:35
                   },
                   scales: {
@@ -270,7 +270,7 @@
               legend: { display: true },
               title: {
                     display: true,
-                    text: 'Safe search Annotations ( in % )',
+                    text: 'Safe search Annotations ( Each over % )',
                     fontSize:35
               },
               scales: {
@@ -314,7 +314,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Logo Annotation ( in % )',
+                    text: 'Logo Annotation ( Each over % )',
                     fontSize:20
                 },
                 layout: {
@@ -355,7 +355,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Localizedobject Annotations ( in % )',
+                    text: 'Localizedobject Annotations ( Each over % )',
                     fontSize:20
                 },
                 layout: {
