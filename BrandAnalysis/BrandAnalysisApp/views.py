@@ -660,7 +660,6 @@ def makeGroupChart(user):
         data.append(temparray)
     data1 = []
     data2 = []
-
     for temp in data:
         data1.append(temp[0])
         data2.append(temp[1])
@@ -758,25 +757,19 @@ def generatePDF(request):
 
     user = UserCustom.objects.get(id=request.session.get("userid"))
 
-
     # chart - 1
     labeldata = makeLabelData(user)
-
 
     # chart - 2
     piedata = makePieChart(user)
 
-
     # Chart - 3
     groupbarchart = makeGroupChart(user)
-
 
     # Chart - 4
     horizontalbarchart = makeHorizontalGroupChart(user)
 
-
     # chart - 5
-
     data = makelogoAnnotationPie(user)
 
 
