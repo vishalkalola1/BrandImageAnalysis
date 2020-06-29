@@ -82,9 +82,9 @@ EMAIL_PORT = 587
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Brand_Analysis',
+        'NAME': 'brand_analysis',
         'USER': 'root',
-        'PASSWORD': 'root9876',
+        'PASSWORD': 'admin123',
         'HOST': 'localhost',
         'PORT': '3306'
     }

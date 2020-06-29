@@ -4,3 +4,6 @@ PyMySQL
 six
 google-cloud-vision
 Pillow
+cryptography
+pip
+sqlparse
