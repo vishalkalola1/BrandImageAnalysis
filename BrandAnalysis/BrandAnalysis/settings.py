@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'brand_analysis',
         'USER': 'root',
-        'PASSWORD': 'admin123',
+        'PASSWORD': 'root9876',
         'HOST': 'localhost',
         'PORT': '3306'
     }

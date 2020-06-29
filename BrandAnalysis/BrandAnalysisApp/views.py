@@ -772,7 +772,6 @@ def generatePDF(request):
     # chart - 5
     data = makelogoAnnotationPie(user)
 
-
     localizedData = makelocalizedobjectPie(user)
 
 
@@ -787,7 +786,6 @@ def generatePDF(request):
         "pielabels": piedata[1],
         "groupbardata" : groupbarchart[0],
         "groupbarlabel" : groupbarchart[1],
-        "grouplikelyhood" : groupbarchart[2],
         "horizontalbarchartdata" : horizontalbarchart[0],
         "horizontalbarchartlabel" : horizontalbarchart[1],
         "logodata": data[0],
