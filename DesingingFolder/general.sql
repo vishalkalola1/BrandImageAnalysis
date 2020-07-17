@@ -6,18 +6,8 @@ update user set uemail = 'channel@gmail.com' where id = 2;
 select * from user;
 select * from UploadFileAnnotations;
 select * from uploadFile;
-select * from TextAnnotations;
-select * from SafeSearchAnnotation;
-select * from LogoAnnotations;
-select * from LocationAnnotations;
-select * from LocalizedObjectAnnotations;
-select * from LanguageAnnotations;
 select * from LandmarkAnnotations;
-select * from LabelAnnotations;
-select * from ImagePropertiesAnnotation;
-select * from FullTextAnnotation;
-select * from FaceAnnotations;
-
+select * from LanguageAnnotations;
 select * from HelpTable;
 select * from ContactUSTable;
 
