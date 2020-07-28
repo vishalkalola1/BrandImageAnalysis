@@ -7,3 +7,4 @@ Pillow
 cryptography
 pip
 sqlparse
+psycopg2-binary

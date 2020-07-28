@@ -81,11 +81,11 @@ EMAIL_PORT = 587
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'brand_analysis',
         'USER': 'root',
         'PASSWORD': 'root9876',
-        'HOST': 'localhost',
+        'HOST': 'myapptestnode.herokuapp.com',
         'PORT': '3306'
     }
 }
