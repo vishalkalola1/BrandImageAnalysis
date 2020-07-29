@@ -55,7 +55,9 @@ ROOT_URLCONF = 'BrandAnalysis.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Templates/BrandAnalysisApp/'],
+        'DIRS': [
+            os.path.join(BASE_DIR,'Templates/')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
