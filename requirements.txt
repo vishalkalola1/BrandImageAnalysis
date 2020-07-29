@@ -8,3 +8,4 @@ cryptography
 pip
 sqlparse
 psycopg2-binary
+gunicorn
