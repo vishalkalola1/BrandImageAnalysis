@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from .Controllers import GeneratePDF
 urlpatterns = [
-    path('', views.home,name='home'),
+    path('/', views.home,name='home'),
     path('login',views.login,name='login'),
     path('register',views.register,name='register'),
     path('uploadImage/<int:id>',views.uploadImage,name='uploadImage'),
