@@ -18,7 +18,7 @@ from django.conf import settings
 from django.shortcuts import HttpResponse
 from django.template.loader import get_template, render_to_string
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'pristockmarket.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'/BrandAnalysis/pristockmarket.json'
 
 def home(request):
     context = {}
