@@ -1,7 +1,6 @@
 /* globals Chart:false, feather:false */
 (function () {
       'use strict'
-      feather.replace()
       // Graphs
 //---------------------------------- pie Start --------------------------------------
 
@@ -370,7 +369,7 @@
             },
      })
 //---------------------------------- pie end --------------------------------------
-}())
+})();
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
