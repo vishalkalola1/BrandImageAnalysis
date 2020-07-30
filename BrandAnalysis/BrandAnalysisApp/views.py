@@ -335,23 +335,32 @@ def sendContactEmail(email,name,mailsubject,msg):
 
 def reset(request,id,token):
     context = {}
-    if request.POST == "POST":
-        try:
-            user = UserCustom.objects.get(id=id)
-            if user is not None and account_activation_token.check_token(user, token):
-                return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
-            else:
-                return HttpResponse('Activation link is invalid!')
-        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-            user = None
-            return HttpResponse('Activation link is invalid!')
+    if request.method != "POST":
+        return render(request, 'BrandAnalysisApp/ResetPassword.html', context)
     else:
-        return render(request,'BrandAnalysisApp/homeadmin.html',context)
+        unewpassword = request.POST['unewpassword']
+        uconfirmnewpassword = request.POST['uconfirmnewpassword']
+        if unewpassword == uconfirmnewpassword:
+            try:
+                user = UserCustom.objects.get(id=id)
+                if user is not None and account_activation_token.check_token(user, token):
+                    user.upassword = unewpassword
+                    user.save()
+                    messages.success(request, "Password Change Successfully.. Now you can login with new password")
+                    return redirect('login')
+                else:
+                    return HttpResponse('Reset link is invalid!')
+            except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+                user = None
+                return HttpResponse('Reset link is invalid!')
+        else:
+            messages.error(request, "Password doesn't match. Please check your password.")
+            return redirect('reset',id,token)
 
 def report(request,id):
     context = {}
     user = UserCustom.objects.get(id=id)
-    if request.POST == "POST":
+    if request.method == "POST":
         pass
     else:
         context["user"] = user
