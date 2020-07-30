@@ -55,7 +55,7 @@ def login(request):
                     else:
                         return redirect("dashboard")
                 else:
-                    messages.success(request,"User is not Activated")
+                    messages.success(request,"User is not activated")
             else:
                 messages.success(request, "User is not authenticated")
             return redirect('login')
@@ -94,7 +94,7 @@ def register(request):
 
 def uploadImage(request,id):
     context = {}
-    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+    if (request.session.get('userid') is None): # or (request.session.get("usertype").lower() != "admin"):
         return redirect('home')
 
     user = UserCustom.objects.get(id=id)
@@ -397,7 +397,7 @@ def adminHome(request):
 def editcompany(request,id):
     context = {}
 
-    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+    if (request.session.get('userid') is None):# or (request.session.get("usertype").lower() != "admin"):
         return redirect('home')
 
     user = UserCustom.objects.get(id=id)
@@ -430,7 +430,7 @@ def editcompany(request,id):
 def viewcompany(request,id):
     context = {}
 
-    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+    if (request.session.get('userid') is None):# or (request.session.get("usertype").lower() != "admin"):
         return redirect('home')
 
     if request.method == "POST":
@@ -445,7 +445,7 @@ def viewcompany(request,id):
 def delete(request,id): # Todo Delete
     context = {}
 
-    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+    if (request.session.get('userid') is None):# or (request.session.get("usertype").lower() != "admin"):
         return redirect('home')
 
     # instance = UserCustom.objects.get(id=id)
