@@ -4,8 +4,8 @@
       // Graphs
 //---------------------------------- pie Start --------------------------------------
 
-      var labeldata = JSON.parse(document.getElementById('labeldata').textContent);
-      var labellabels = JSON.parse(document.getElementById('labellabels').textContent);
+      var labeldata = JSON.parse(document.getElementById('labeldata'));
+      var labellabels = JSON.parse(document.getElementById('labellabels'));
 
       var colors = []
       var j;
@@ -177,8 +177,8 @@
 
       var ctx = document.getElementById('myChart').getContext('2d');
       // eslint-disable-next-line no-unused-vars
-      var piedata = JSON.parse(document.getElementById('piedata').textContent);
-      var pielabels = JSON.parse(document.getElementById('pielabels').textContent);
+      var piedata = JSON.parse(document.getElementById('piedata'));
+      var pielabels = JSON.parse(document.getElementById('pielabels'));
       var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -201,8 +201,8 @@
 
 //---------------------------------- group bar end --------------------------------------
       var ctx = document.getElementById("groupbarchart").getContext("2d");
-      var groupbardata = JSON.parse(document.getElementById('groupbardata').textContent);
-      var groupbarlabel = JSON.parse(document.getElementById('groupbarlabel').textContent);
+      var groupbardata = JSON.parse(document.getElementById('groupbardata'));
+      var groupbarlabel = JSON.parse(document.getElementById('groupbarlabel'));
       var color1 = getRandomColor()
       var color2 = getRandomColor()
       var myHorizontalBarChart = new Chart(ctx, {
@@ -245,8 +245,8 @@
       });
 //---------------------------------- group bar end --------------------------------------
 
-    var horizontalbarchartdata = JSON.parse(document.getElementById('horizontalbarchartdata').textContent);
-    var horizontalbarchartlabel = JSON.parse(document.getElementById('horizontalbarchartlabel').textContent);
+    var horizontalbarchartdata = JSON.parse(document.getElementById('horizontalbarchartdata'));
+    var horizontalbarchartlabel = JSON.parse(document.getElementById('horizontalbarchartlabel'));
     var color1 = getRandomColor()
     var color2 = getRandomColor()
     var myHorizontalBarChart = new Chart(document.getElementById("bar-chart-horizontal"), {
@@ -291,8 +291,8 @@
 //---------------------------------- pie Start --------------------------------------
     var piechart_3d = document.getElementById('piechart_3d').getContext('2d');
     // eslint-disable-next-line no-unused-vars
-    var logodata = JSON.parse(document.getElementById('logodata').textContent);
-    var logolabel = JSON.parse(document.getElementById('logolabel').textContent);
+    var logodata = JSON.parse(document.getElementById('logodata'));
+    var logolabel = JSON.parse(document.getElementById('logolabel'));
     var colors = []
     for(var j=0;j<logodata.length;j++){
        colors.push(getRandomColor())
@@ -332,8 +332,8 @@
 //---------------------------------- pie Start --------------------------------------
     var piechart_3d1 = document.getElementById('piechart_3d1').getContext('2d');
     // eslint-disable-next-line no-unused-vars
-    var localizedData = JSON.parse(document.getElementById('localizedData').textContent);
-    var localizedLabel = JSON.parse(document.getElementById('localizedLabel').textContent);
+    var localizedData = JSON.parse(document.getElementById('localizedData'));
+    var localizedLabel = JSON.parse(document.getElementById('localizedLabel'));
     var colors = []
     for(var j=0;j<localizedData.length;j++){
        colors.push(getRandomColor())
@@ -373,7 +373,7 @@
 google.maps.event.addDomListener(window, 'load', initialize);
 //---------------------------------- Map end --------------------------------------
 //getPDF()
-}())
+}());
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
@@ -385,7 +385,7 @@ function getRandomColor() {
 }
 
 function initialize() {
-    var mapdata = JSON.parse(document.getElementById('mapdata').textContent);
+    var mapdata = JSON.parse(document.getElementById('mapdata'));
     var myCenter = new google.maps.LatLng(48.7867584, 2.3551161);
     var locations = mapdata
     var myCenter = new google.maps.LatLng(locations[0][1], locations[0][2]);
