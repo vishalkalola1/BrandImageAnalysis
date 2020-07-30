@@ -369,7 +369,7 @@ def report(request,id):
 def adminHome(request):
     context = {}
 
-    if (request.session.get('userid') is None) or (request.session.get("usertype").lower() != "admin"):
+    if (request.session.get('userid') is None):# or (request.session.get("usertype").lower() != "admin"):
         return redirect('home')
 
     if request.method == "POST":

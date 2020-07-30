@@ -90,7 +90,7 @@ DATABASES = {
         'HOST': 'ec2-46-137-124-19.eu-west-1.compute.amazonaws.com',
         'PORT': '5432'
     },
-#
+
 # 'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'brand_analysis',
