@@ -66,9 +66,9 @@
                                 <div class="div">
                                     <button class="buttonview" onclick="location.href='{% url 'viewcompany' questiontemp.user.id %}'">View</button>
                                     <button class="buttonedit" onclick="location.href='{% url 'editcompany' questiontemp.user.id %}'">Edit</button>
-                                    <form class="buttondeleteform" id='person-delete' method="POST">
+                                    <form class="buttondeleteform" id='person-delete' method="POST" action = "{% url 'deletecompany' questiontemp.user.id %}">
                                         {% csrf_token %}
-                                        <button class="buttondelete" formaction="{% url 'deletecompany' questiontemp.user.id %}" onclick="deleteFunction();">Delete</button>
+                                        <button class="buttondelete" onclick="return deleteFunction()">Delete</button>
                                     </form>
                                 </div>
                                 <div>
@@ -85,9 +85,9 @@
     <script>
         function deleteFunction(e) {
             if(!confirm("Are you sure you want to delete?")){
-                e.preventDefault();
+                return false;
             }else{
-                $('#person-delete').submit();
+                return true;
             }
         }
     </script>
