@@ -10,7 +10,6 @@ from .Controllers.TokenGenerator import account_activation_token
 from django.core.mail import EmailMessage
 from django.utils import timezone
 from google.cloud import vision
-from google.cloud.vision import types
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.conf import settings
