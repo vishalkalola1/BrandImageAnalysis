@@ -13,9 +13,10 @@ from google.cloud import vision
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.conf import settings
-
+from PIL import Image
 from django.shortcuts import HttpResponse
 from django.template.loader import get_template, render_to_string
+from .Controllers import ImageExtraction
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'BrandAnalysis/pristockmarket.json'
 
@@ -126,15 +127,30 @@ def handle_uploaded_file(f,name,user): #todo
     callgoogleVisionAPi(path, user, uploadfile)
 
 def callgoogleVisionAPi(obj,user, imageid):
-    likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE',
-                       'LIKELY', 'VERY_LIKELY')
 
-    client = vision.ImageAnnotatorClient()
     # The name of the image file to annotate
     file_name = os.path.abspath(obj)
     # Loads the image into memory
     with io.open(file_name, 'rb') as image_file:
-        content = image_file.read()
+        img = Image.open(image_file)
+
+        #extract color from image
+        colors = ImageExtraction.extract(img,100)
+        for color in colors:
+            imageproperty = ImagePropertiesAnnotation()
+            imageproperty.red = color.rgb.r
+            imageproperty.blue = color.rgb.b
+            imageproperty.green = color.rgb.g
+            imageproperty.alpha = "{:.5f}".format(color.proportion)
+            imageproperty.imageid = imageid
+            imageproperty.userid = user
+            imageproperty.save()
+        print("All color Saved")
+    return
+
+    likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE',
+                       'LIKELY', 'VERY_LIKELY')
+    client = vision.ImageAnnotatorClient()
     image = types.Image(content=content)
 
     # Performs label detection on the image file
@@ -172,20 +188,6 @@ def callgoogleVisionAPi(obj,user, imageid):
         faceobj.surprise = likelihood_name[face.surprise_likelihood]
         faceobj.underExposed = likelihood_name[face.under_exposed_likelihood]
         faceobj.save()
-
-    # Performs color detection on the image file
-    response = client.image_properties(image=image)
-    properties = response.image_properties_annotation
-    for color in properties.dominant_colors.colors:
-        imageproperty = ImagePropertiesAnnotation()
-        imageproperty.red = color.color.red
-        imageproperty.blue = color.color.blue
-        imageproperty.green = color.color.green
-        imageproperty.alpha = color.color.alpha
-        imageproperty.pixelFraction = color.pixel_fraction
-        imageproperty.imageid = imageid
-        imageproperty.userid = user
-        imageproperty.save()
 
     # Performs text detection on the image file
     response = client.text_detection(image=image)
